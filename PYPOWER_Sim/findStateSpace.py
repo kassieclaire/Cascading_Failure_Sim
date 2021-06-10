@@ -1,13 +1,13 @@
 #TODO: Convert S_FindingStateSpace_ANN_dataset_function to python
 import random
 import numpy as np
-import pandapower
+import PYPOWER as pp
+
 import np.array as arr
 
 def FindStateSpace (CaseName, Iterations, InitialFailures, LoadGenerationRatio, LoadShedConstant, EstimationError):
     FakeCapRate = 1; # fake capacity
-    # Parameter initialization
-    trueCaps= arr(50., 100., 200., 400., 800.) # quantized capacity
+    # Parameter initialization trueCaps= arr(50., 100., 200., 400., 800.) # quantized capacity
     # Load the case
     mpc1 = loadcase(CaseName)
     #Ready the case
@@ -15,7 +15,7 @@ def FindStateSpace (CaseName, Iterations, InitialFailures, LoadGenerationRatio, 
     #keep original values of buses, gens, and branches before changing
     originalNumBus = len(mpc1.bus)
     originalNumGen = len(mpc1.gen)
-    originalNumLine = len(mpc1.line)
+    originalNumBranches = len(mpc1.branches)
     numBuses = originalNumBus
     numLine = originalNumLine
     #separate the buses with both load and generators into separate load and generator buses
@@ -29,13 +29,12 @@ def FindStateSpace (CaseName, Iterations, InitialFailures, LoadGenerationRatio, 
         if (load.p_mw < 0):
             load.p_mw = abs(load.p_mw) #Convert to positive value
     #Seperate the buses with both load and generators into seperate load and generator buses -- not necessary since case includes separated gens and loads already?
-    #(mpc1, loadGenMatch) = separateGenAndLoad(mpc1)
+    (mpc1, loadGenMatch) = separateGenAndLoad(mpc1)
     
     #Find installed capacity of a transmission line and use it as rateA threshold
-    (Capacity, FlowCap) = capFinder(whichInitialLoad,mpc1,trueCaps,originalNumLine) #originalNumBranch converted to originalNumLine
-
+    (Capacity, FlowCap) = capFinder(whichInitialLoad,mpc1,trueCaps,originalNumBranches) #originalNumBranch converted to originalNumLine
     #Not dealing with this yet -- fake capacity rate
-    #mpc1.branch(:,6) = FakeCapRate*Capacity;
+    mpc1.branch(:,6) = FakeCapRate*Capacity
     countCaps = []
     for trueCap in trueCaps:
         countCaps.append(sum(Capacity == trueCap))
