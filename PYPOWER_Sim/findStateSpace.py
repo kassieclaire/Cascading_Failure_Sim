@@ -4,11 +4,12 @@ import numpy as np
 import pypower as pp
 import pandas as pd
 import multiprocessing as mp
-import np.array as arr
+from numpy import array as arr
 
 def FindStateSpace (CaseName, Iterations, InitialFailures, LoadGenerationRatio, LoadShedConstant, EstimationError):
     FakeCapRate = 1; # fake capacity
-    # Parameter initialization trueCaps= arr(50., 100., 200., 400., 800.) # quantized capacity
+    # Parameter initialization 
+    trueCaps= arr(50., 100., 200., 400., 800.) # quantized capacity
     # Load the case
     mpc1 = loadcase(CaseName)
     #Ready the case
@@ -26,9 +27,9 @@ def FindStateSpace (CaseName, Iterations, InitialFailures, LoadGenerationRatio, 
     mpc1 = loadcase(CaseName)
     mpc1 = readyTheCase(mpc1)
     #check if any negative load and convert to positive load -- might not be necessary
-    for load in mpc1.load:
-        if (load.p_mw < 0):
-            load.p_mw = abs(load.p_mw) #Convert to positive value
+    for bus in mpc1.bus:
+        if (bus[2] < 0):
+            bus[2]= abs(bus[2]) #Convert to positive value
     #Seperate the buses with both load and generators into seperate load and generator buses -- not necessary since case includes separated gens and loads already?
     (mpc1, loadGenMatch) = separateGenAndLoad(mpc1)
     
