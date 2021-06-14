@@ -126,7 +126,7 @@ def DC_powerFlow_calculator(OriginalMPC, NumBranches, NoCoopPercentageVector, St
     branchMatrix = mpcl.branch
     busMatrix = mpcl.bus
     genMatrix = mpcl.gen
-    NumBranches = len(branchMatrix)
+    NumBranches = len(branchMatrix) ##find format for pypower which column needs to be included
     numGens= 
 
 if __name__ =='__main__':
