@@ -1,3 +1,10 @@
+##TODO: Goals:
+#Generate PStop as function of F
+#Generate pStop as function of CMax
+#Generate pStop as function of F and CMax
+#Generate pStop as function of first component of T (hence 2nd component if only 2 clusters)
+#Generate pStop as function of F and T components -- ultimate resolution
+#Many different ways to generate pStop
 import pandas as pd
 import numpy as np
 import scipy.io
@@ -6,7 +13,8 @@ import matplotlib.pyplot as plt
 number_of_lines = 186
 ##testing clusters
 #clusters = {'a' : range(0, 93), 'b' : range(93, number_of_lines+1)}
-clusters = {range(0, 93) : 'a', range(93, number_of_lines+1) : 'b'}
+#clusters = {range(0, 93) : 'a', range(93, number_of_lines+1) : 'b'}'
+clusters = [range(0, 94), range(94, number_of_lines+1)]
 ##Temporarily loading in matrix
 mat = scipy.io.loadmat('result.mat') #the states matrix input -- temporary
 #print(mat)
@@ -29,13 +37,20 @@ states_df = states_df.astype({'Total Line Failures' : int, 'Maximum failed line 
 #print(states_df)
 states_df.drop(columns=['Free Space 1', 'Free Space 2', 'Free Space 3', 'Free Space 4'], inplace=True)
 #print(states_df.dtypes)
-states_df.to_csv(r'states_dataframe', index=False)
+states_df.to_csv(r'states_dataframe.csv', index=False)
 ##Create new dataframe for cluster line failure information
-#cluster_failures = [[0]*number_of_lines for x in range(len(clusters))] #list of lists of cluster line failures
-
-cluster_failures = 
+cluster_failures = [[0]*number_of_lines for x in range(len(clusters))] #list of lists of cluster line failures
+#cluster_failures = []
 for index, row in states_df.iterrows():
+    steady_state = row['Steady State'].astype(int)
+    if (steady_state == -1):
+        for i in range(len(clusters)):
+
+            
+        
+    total_line_failures = row['Total Line Failures'].astype(int)
     line_failure_index = row['Failed Line Index'].astype(int)
+    
 
 
 cluster_line_failure_df = pd.DataFrame()
