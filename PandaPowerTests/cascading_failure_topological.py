@@ -9,7 +9,6 @@ import pandas as pd
 import numpy as np
 import scipy.io
 import matplotlib.pyplot as plt
-from operator import truediv
 ##Temporary for testing with IEEE118 case
 number_of_lines = 186
 initial_failures = [] #indices of initial failures
@@ -17,13 +16,13 @@ initial_failures = [] #indices of initial failures
 #clusters = {'a' : range(0, 93), 'b' : range(93, number_of_lines+1)}
 #clusters = {range(0, 93) : 'a', range(93, number_of_lines+1) : 'b'}'
 clusters = [list(range(0, 94)), list(range(94, number_of_lines+1))]
-print(clusters[0])
+#print(clusters[0])
 ##Temporarily loading in matrix
 mat = scipy.io.loadmat('states.mat') #the states matrix input -- temporary
 initial_failures_mat = scipy.io.loadmat('initial_failures') #cell of arrays containing the initial failures for each iteration
 initial_failures_arrays = [l.tolist() for l in initial_failures_mat['Initial_Failure_Table']]
-initial_failures = [l.tolist()[0] for l in initial_failures_arrays[0]]
-print(initial_failures)
+initial_failures = [l.tolist()[0] for l in initial_failures_arrays[0]] #change initial failure matrix into list of lists
+#print(initial_failures)
 #print(mat)
 states_column_names = ['Total Line Failures', 'Maximum failed line capacity', 
     'Load shed from previous step', 'Difference in Load Shed', 
@@ -44,7 +43,7 @@ states_df = states_df.astype({'Total Line Failures' : int, 'Maximum failed line 
 #print(states_df)
 states_df.drop(columns=['Free Space 1', 'Free Space 2', 'Free Space 3', 'Free Space 4'], inplace=True)
 #print(states_df.dtypes)
-states_df.to_csv(r'states_dataframe.csv', index=False)
+
 ##Create new dataframe for cluster line failure information
 #cluster_failures = [[0]*number_of_lines for x in range(len(clusters))] #list of lists of cluster line failures
 cluster_failures = []
@@ -77,10 +76,26 @@ for index, row in states_df.iterrows():
             if line_failure_index in clusters[i]: #if line failure is in cluster i
                 #print("Incrementing cluster ", i)
                 line_failure_row[i] = line_failure_row[i]+1
-    cluster_failures.append(line_failure_row) #append line_failure_row to the cluster_failures list of lists (matrix to be added)
+    cluster_failures.append(line_failure_row + []) #append line_failure_row to the cluster_failures list of lists (matrix to be added) -- fix -- add empty list?
     topological_factor_row = [cluster_failure / total_line_failures for cluster_failure in line_failure_row] #create the topological factor row
     cluster_failures_topological_factors.append(topological_factor_row)
-print("Iteration track = ", iteration_track) #check, should be the number of iterations run
+#print(cluster_failures)
+#Append region puredata to dataframe
+
+for i in range(len(clusters)):
+    region_df_entry_name = 'Region ' + str(i) + ' Failures'
+    region_failure_data = [val[i] for val in cluster_failures]
+    #print(region_failure_data)
+    states_df[region_df_entry_name] = region_failure_data
+#append topological factor to df
+for i in range(len(clusters)):
+    region_df_entry_name = 'Region ' + str(i) + ' Topological Factor'
+    region_failure_data = [val[i] for val in cluster_failures_topological_factors]
+    #print(region_failure_data)
+    states_df[region_df_entry_name] = region_failure_data
+#Save the dataframe
+states_df.to_csv(r'states_dataframe.csv', index=False)
+#print("Iteration track = ", iteration_track) #check, should be the number of iterations run
 #print(cluster_failures)
 #print(cluster_failures_topological_factors)
 
