@@ -1,0 +1,4 @@
+from cascading_failure_function import cascading_failure_function
+
+#Run cascading_failure_function
+cascading_failure_function()
