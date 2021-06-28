@@ -54,6 +54,7 @@ start_detect = 1
 line_failure_row = [0]*len(clusters) # set line_failure_row outside since it needs to be kept between iterations
 #iteration tracker for selecting the correct initial_failures list to use
 iteration_track = 0
+cluster_failure_track_vector = []
 for index, row in states_df.iterrows():
     steady_state = row['Steady State'].astype(int)
     total_line_failures = row['Total Line Failures'].astype(int)
@@ -64,10 +65,14 @@ for index, row in states_df.iterrows():
             start_detect = 0 #set start_detect to 0
         #reset the line failures and then do the for loop for adding for the initial failure
         line_failure_row = [0]*len(clusters)
+        
+        initial_cluster_failures = []
         for failure in initial_failures[iteration_track]:
              for i in range(len(clusters)):
                 if failure in clusters[i]: #if line failure is in cluster i
                     line_failure_row[i] = line_failure_row[i]+1
+                    initial_cluster_failures.append(i)
+        cluster_failure_track_vector.append(initial_cluster_failures) #append the initial failures vector to the cluster_failure_track vector
         iteration_track = iteration_track+1 #increment iteration tracker -- this iteration is now complete
     else: #if previous state was not steady state
         if steady_state == -1: #if steady state, set restart variable to 1
@@ -76,6 +81,9 @@ for index, row in states_df.iterrows():
             if line_failure_index in clusters[i]: #if line failure is in cluster i
                 #print("Incrementing cluster ", i)
                 line_failure_row[i] = line_failure_row[i]+1
+                temp_cluster_failure_vec = cluster_failure_track_vector[-1] + [] #Get last vector in list of vectors
+                temp_cluster_failure_vec.append(i) #append the region of this failure to that list
+                cluster_failure_track_vector.append(temp_cluster_failure_vec) #append the cluster of the failure to the vector
     cluster_failures.append(line_failure_row + []) #append line_failure_row to the cluster_failures list of lists (matrix to be added) -- fix -- add empty list?
     topological_factor_row = [cluster_failure / total_line_failures for cluster_failure in line_failure_row] #create the topological factor row
     cluster_failures_topological_factors.append(topological_factor_row)
@@ -93,11 +101,22 @@ for i in range(len(clusters)):
     region_failure_data = [val[i] for val in cluster_failures_topological_factors]
     #print(region_failure_data)
     states_df[region_df_entry_name] = region_failure_data
+#append the region of failure data
+region_df_entry_name = 'Region of Failure'
+states_df[region_df_entry_name] = cluster_failure_track_vector
+
 #Save the dataframe
 states_df.to_csv(r'states_dataframe.csv', index=False)
 #print("Iteration track = ", iteration_track) #check, should be the number of iterations run
 #print(cluster_failures)
 #print(cluster_failures_topological_factors)
+states_simple_df = states_df.copy()
+states_simple_df.drop(columns=['Maximum failed line capacity', 
+    'Load shed from previous step', 'Difference in Load Shed', 
+    'Load', 'Capacity of Failed Ones', 'Capacity of Failed Ones 2','Failed Line Index', 
+    'Capacity of Failed One', 'Time of Failure Event', 'Demand-Loadshed Difference',
+    'Generation'], inplace=True)
+states_simple_df.to_csv(r'states_simple.csv', index=False)
 
 cluster_line_failure_df = pd.DataFrame()
 #print(states_df['Total Line Failures'])
@@ -106,8 +125,8 @@ total_states = [0] * (number_of_lines + 1)
 stable_states = [0] * (number_of_lines + 1)
 for index, row in states_df.iterrows():
     #print(row['Total Line Failures'])
-    total_line_failures = row['Total Line Failures'].astype(int)
-    steady_state = row['Steady State'].astype(int)
+    total_line_failures = row['Total Line Failures']
+    steady_state = row['Steady State']
     if(total_line_failures > 0):
         total_states[total_line_failures] = total_states[total_line_failures] + 1
         if (steady_state == -1):
