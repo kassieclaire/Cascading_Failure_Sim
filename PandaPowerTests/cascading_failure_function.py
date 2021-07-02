@@ -2,10 +2,11 @@ import pandas as pd
 import numpy as np
 import scipy.io
 import matplotlib.pyplot as plt
-#TODO: Add probabilities for failure in specific regions based on distribution of current failures in regions
+#DONE: TODO: Add probabilities for failure in specific regions based on distribution of current failures in regions
 #TODO: Cluster lines based on bus clusters
 #Talk to Brad or Matt to get into workstation, get IP address of workstation in lab -- ask Jamir
-def cascading_failure_function(states_matrix_name='states',initial_failure_table_name='initial_failures', clusters_matrix_name='case_118_clusters', number_of_lines=186, graph_pstop_simple=True):
+#TODO: probability mass distribution given fixed number of failures -- with Jamir/AJ
+def cascading_failure_function(states_matrix_name='states',initial_failure_table_name='initial_failures', clusters_matrix_name='case_118_clusters', number_of_lines=186, graph_pstop_simple=True, calculate_region_failure_probabilities=True):
     ##Load in clusters
     cluster_mat = scipy.io.loadmat(clusters_matrix_name)
     cluster_lists = [l.tolist() for l in cluster_mat['results118'][0]]
@@ -14,7 +15,9 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
     print(len(clusters))
 
     #clusters = cluster_mat[]
-    #clusters = [list(range(0, 94)), list(range(94, number_of_lines+1))]
+    clusters = [list(range(0, 94)), list(range(94, number_of_lines+1))]
+    #test with 3 clusters
+    #clusters = [list(range(0, 50)),list(range(50, 94)), list(range(94, number_of_lines+1))]
     #print(clusters[0])
     ##Temporarily loading in matrix
     mat = scipy.io.loadmat(states_matrix_name) #the states matrix input -- temporary
@@ -119,6 +122,50 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
 
     cluster_line_failure_df = pd.DataFrame()
     #print(states_df['Total Line Failures'])
+    
+    if (calculate_region_failure_probabilities):
+        #Format: dataframe consisting of failures in each region, then likelihood of failures for each region (region*2 columns, region combinations visited rows)
+        #TODO: Got through the dataframe, find every distinct combination of region failures
+        distinct_region_failure_combinations = []
+        previous_region_combination = []
+        region_failures_after = {}
+        for index, row in states_df.iterrows():
+            region_combination = []
+            #create the region combination
+            for i in range(len(clusters)):
+                column_name = 'Region ' + str(i) + ' Failures'
+                region_combination.append(row[column_name])
+            #convert to tuple
+            region_combination_key = tuple(region_combination)
+            #use as key in dictionary
+            if region_combination_key not in region_failures_after:
+                #add the key
+                region_failures_after[region_combination_key] = [0]*len(clusters)
+            if (index != 0 and row['Steady State'] != -1): #if this is not the initial row and not initial failures
+                previous_region_combination_key = tuple(previous_region_combination)
+                previous_region_combination = region_combination #set this region combination to the previous for the next iteration
+                region_failures_after[previous_region_combination_key][row['Region of Failure'][-1]] += 1 #increment the times in a region that this failure occurs by 1
+            else:
+                previous_region_combination = region_combination
+            #see if region combination has occured before
+            #if region_combination not in distinct_region_failure_combinations:
+                #distinct_region_failure_combinations.append(region_combination)
+        print(region_failures_after)
+        region_failures_after_normalized = {}
+        for key in region_failures_after.keys():
+            if (sum(region_failures_after[key]) != 0):
+                region_failures_after_normalized[key] = [float(i)/sum(region_failures_after[key]) for i in region_failures_after[key]] #normalize entries
+            else:
+                region_failures_after_normalized[key] = region_failures_after[key]
+        #print(region_failures_after_normalized) #print the dictionary of failures
+        #print formatted (code from https://stackoverflow.com/questions/20181899/how-to-make-each-key-value-of-a-dictionary-print-on-a-new-line/20182376)
+        #print("\n".join("{!r} : {!r}".format(k, v) for k, v in region_failures_after_normalized.items()))
+
+
+            
+        #print(distinct_region_failure_combinations) #test -- print the distinct region failure combinations
+        #TODO: calculate likelihood of failure in next region
+
     ##Cascading Failure Curve Code
     if (graph_pstop_simple):
         total_states = [0] * (number_of_lines + 1)
