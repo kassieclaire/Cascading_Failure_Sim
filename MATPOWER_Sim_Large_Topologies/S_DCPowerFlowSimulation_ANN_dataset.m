@@ -1,6 +1,5 @@
 %Made into function by Kassie Povinelli
-function States = S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s,
-IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)
+function States = S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)
 
     
     %%  Human error probability
@@ -205,8 +204,10 @@ IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentage
             D = degree(G);
             Degree = mean(D);
             path = distances(G);
-            for i =1:163
-                for j=1:163
+            %for i =1:163
+            for i =1:size(path, 1)
+                %for j=1:163
+                for j=1:size(path, 2)
                     if (path(i,j) == Inf)
                         path(i,j) =0;
                     end
@@ -260,7 +261,8 @@ IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentage
                 Served=0;
                 generation = 0;
                 dispatched_served = 0;
-                for i=1:NumBuses
+                %for i=1:NumBuses %fix: why was this NumBuses instead of NumGens?
+                for i=1:NumGens
                     if(DemandIndex(i)==1)
                         Served=Served+abs(TotalGenDem(i,1))+abs(TotalGenDem(i,2)); % change by PD
                         dispatched_served = dispatched_served + abs(TotalGenDem(i,1));
@@ -317,6 +319,8 @@ IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentage
             States(StateCounter,9)=MinCap; % min capacity of failed ones
             States(StateCounter,10)=MaxCap; % max capacity of failed ones
             States(StateCounter-1,8)=StateCounter;
+            %temporary: print out the number of failed lines
+            fprintf('Number of failed lines: %d \n', States(StateCounter,1));
         else
             States(StateCounter,8)=-1; % It means previous state was a steady state
         

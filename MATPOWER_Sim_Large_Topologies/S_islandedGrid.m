@@ -188,12 +188,13 @@ for k=1:SS % Number of islands
             %[result2, success]=rundcopf(mpc2);
             result2222= result2;
             WhatToAddIfNotConverge=mpc2.branch(:,6).* (0.1);
+            %%THIS IS A POINT WHERE IT GETS STUCK
             while(success==0)
-                mpc2.branch(:,6)=mpc2.branch(:,6)+WhatToAddIfNotConverge;
+                mpc2.branch(:,6)=mpc2.branch(:,6)+WhatToAddIfNotConverge; %Why do we add this?
                 opt=mpoption('VERBOSE',0,'OUT_ALL',0,'OUT_BUS',0,'OUT_BRANCH',0,'OUT_ALL_LIM',0);
                 [result2, success]=rundcopf(mpc2,opt);
             end
-            
+            %%RIGHT HERE
             for bb=1:length(mpc2.bus(:,1))
                 VB(BusTracker(bb,k))=result2.bus(bb,9);
             end

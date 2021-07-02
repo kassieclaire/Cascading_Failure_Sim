@@ -2,8 +2,19 @@ import pandas as pd
 import numpy as np
 import scipy.io
 import matplotlib.pyplot as plt
-def cascading_failure_function(states_matrix_name='states.mat',initial_failure_table_name='initial_failures', number_of_lines=186, graph_pstop_simple=True):
-    clusters = [list(range(0, 94)), list(range(94, number_of_lines+1))]
+#TODO: Add probabilities for failure in specific regions based on distribution of current failures in regions
+#TODO: Cluster lines based on bus clusters
+#Talk to Brad or Matt to get into workstation, get IP address of workstation in lab -- ask Jamir
+def cascading_failure_function(states_matrix_name='states',initial_failure_table_name='initial_failures', clusters_matrix_name='case_118_clusters', number_of_lines=186, graph_pstop_simple=True):
+    ##Load in clusters
+    cluster_mat = scipy.io.loadmat(clusters_matrix_name)
+    cluster_lists = [l.tolist() for l in cluster_mat['results118'][0]]
+    clusters = [[item for sublist in cluster_list for item in sublist] for cluster_list in cluster_lists]
+    print(clusters)
+    print(len(clusters))
+
+    #clusters = cluster_mat[]
+    #clusters = [list(range(0, 94)), list(range(94, number_of_lines+1))]
     #print(clusters[0])
     ##Temporarily loading in matrix
     mat = scipy.io.loadmat(states_matrix_name) #the states matrix input -- temporary
