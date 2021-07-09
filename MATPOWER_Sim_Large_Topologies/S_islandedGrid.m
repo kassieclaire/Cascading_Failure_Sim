@@ -190,8 +190,9 @@ for k=1:SS % Number of islands
             WhatToAddIfNotConverge=mpc2.branch(:,6).* (0.1);
             %%THIS IS A POINT WHERE IT GETS STUCK
             while(success==0)
+                fprintf("Rate A value after optimization failure: %f.2\n", mpc2.branch(:,6))
                 mpc2.branch(:,6)=mpc2.branch(:,6)+WhatToAddIfNotConverge; %Why do we add this?
-                opt=mpoption('VERBOSE',0,'OUT_ALL',0,'OUT_BUS',0,'OUT_BRANCH',0,'OUT_ALL_LIM',0);
+                opt=mpoption('VERBOSE',1,'OUT_ALL',0,'OUT_BUS',0,'OUT_BRANCH',0,'OUT_ALL_LIM',0);
                 [result2, success]=rundcopf(mpc2,opt);
             end
             %%RIGHT HERE
