@@ -15,5 +15,4 @@ from cascading_failure_function import cascading_failure_function
 #   cascading failure pstop curve based on number of line failures only
 #calculate_region_failure_probabilities :   The function will print out the probabilities of a failure occuring in each region
 #   assuming that a failures DOES OCCUR. Can be modified to remove this assumption
-
 cascading_failure_function()
