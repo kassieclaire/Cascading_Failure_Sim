@@ -5,7 +5,7 @@ A=load('case_118_clusters.mat'); % Loading the .mat file
 mpc=loadcase(case118); % Loading the IEEE118 casefile 
 cluster_Branch=zeros(186,6); % Creating and empty array of 186 branches of 6 clusters  
 
-% Separating the 118 buses from the cell to matfiles 
+% Separating the 118 buses from cell to matfiles 
 cluster1=cell2mat(A.results118(1)); 
 cluster2=cell2mat(A.results118(2));
 cluster3=cell2mat(A.results118(3));
