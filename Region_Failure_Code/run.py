@@ -16,4 +16,5 @@ from cascading_failure_function import cascading_failure_function
 #calculate_region_failure_probabilities :   The function will print out the probabilities of a failure occuring in each region
 #   assuming that a failures DOES OCCUR. Can be modified to remove this assumption
 
-cascading_failure_function()
+#cascading_failure_function(states_matrix_name='states_IEEE118', initial_failure_table_name='initial_failures_IEEE118', clusters_matrix_name='cluster_branch_118')
+cascading_failure_function(clusters_matrix_name='cluster_branch_118')

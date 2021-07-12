@@ -3,19 +3,21 @@ import numpy as np
 import scipy.io
 import matplotlib.pyplot as plt
 #DONE: TODO: Add probabilities for failure in specific regions based on distribution of current failures in regions
-#TODO: Cluster lines based on bus clusters
+#DONE: TODO: Cluster lines based on bus clusters
 #Talk to Brad or Matt to get into workstation, get IP address of workstation in lab -- ask Jamir
 #TODO: probability mass distribution given fixed number of failures -- with Jamir/AJ
-def cascading_failure_function(states_matrix_name='states',initial_failure_table_name='initial_failures', clusters_matrix_name='case_118_clusters', number_of_lines=186, graph_pstop_simple=True, calculate_region_failure_probabilities=True):
+def cascading_failure_function(states_matrix_name='states',initial_failure_table_name='initial_failures', clusters_matrix_name='case_118_clusters', number_of_lines=186, graph_pstop_simple=True, calculate_region_failure_probabilities=True, use_test_cluster=False):
     ##Load in clusters
-    cluster_mat = scipy.io.loadmat(clusters_matrix_name)
-    cluster_lists = [l.tolist() for l in cluster_mat['results118'][0]]
-    clusters = [[item for sublist in cluster_list for item in sublist] for cluster_list in cluster_lists]
-    print(clusters)
-    print(len(clusters))
-
+    if use_test_cluster:
+        clusters = [list(range(0, 94)), list(range(94, number_of_lines+1))]
+    else:
+        cluster_mat = scipy.io.loadmat(clusters_matrix_name)
+        cluster_lists = [l.tolist() for l in cluster_mat[clusters_matrix_name][0]]
+        clusters = [[item for sublist in cluster_list for item in sublist] for cluster_list in cluster_lists]
+    #print(clusters)
+    #print(len(clusters))
     #clusters = cluster_mat[]
-    clusters = [list(range(0, 94)), list(range(94, number_of_lines+1))]
+    
     #test with 3 clusters
     #clusters = [list(range(0, 50)),list(range(50, 94)), list(range(94, number_of_lines+1))]
     #print(clusters[0])
@@ -129,6 +131,7 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
         distinct_region_failure_combinations = []
         previous_region_combination = []
         region_failures_after = {}
+        new_cascade = True
         for index, row in states_df.iterrows():
             region_combination = []
             #create the region combination
@@ -140,13 +143,24 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
             #use as key in dictionary
             if region_combination_key not in region_failures_after:
                 #add the key
-                region_failures_after[region_combination_key] = [0]*len(clusters)
-            if (index != 0 and row['Steady State'] != -1): #if this is not the initial row and not initial failures
+                region_failures_after[region_combination_key] = [0]*(len(clusters)+1) #add 1 for the probability of not failing
+            #if (index != 0 and row['Steady State'] != -1): #if this is not the initial row and not initial failures
+            if not new_cascade:
                 previous_region_combination_key = tuple(previous_region_combination)
                 previous_region_combination = region_combination #set this region combination to the previous for the next iteration
                 region_failures_after[previous_region_combination_key][row['Region of Failure'][-1]] += 1 #increment the times in a region that this failure occurs by 1
+                if row['Steady State'] == -1:
+                    new_cascade = True #next row is new cascade
+            elif (index != 0):
+                previous_region_combination_key = tuple(previous_region_combination)
+                previous_region_combination = region_combination #set this region combination to the previous for the next iteration
+                region_failures_after[previous_region_combination_key][-1] += 1 #increment the times a steady state occurs by 1
+                if row['Steady State'] != -1:
+                    new_cascade = False
             else:
                 previous_region_combination = region_combination
+                if row['Steady State'] != -1:
+                    new_cascade = False
             #see if region combination has occured before
             #if region_combination not in distinct_region_failure_combinations:
                 #distinct_region_failure_combinations.append(region_combination)
@@ -159,7 +173,7 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
                 region_failures_after_normalized[key] = region_failures_after[key]
         #print(region_failures_after_normalized) #print the dictionary of failures
         #print formatted (code from https://stackoverflow.com/questions/20181899/how-to-make-each-key-value-of-a-dictionary-print-on-a-new-line/20182376)
-        #print("\n".join("{!r} : {!r}".format(k, v) for k, v in region_failures_after_normalized.items()))
+        print("\n".join("{!r} : {!r}".format(k, v) for k, v in region_failures_after_normalized.items()))
 
 
             
