@@ -36,6 +36,9 @@ NumBranches = originalNumBran;
 %%
 clear mpc1; % clear because
 mpc1 = loadcase(CaseName);
+%reduce information in branch, bus, gen, gencost if more than needed
+mpc1 = reduce_information(mpc1);
+%Ready the case
 mpc1 = S_ReadyTheCase(mpc1);
 %% check if any negative load
 for i=1:NumBuses
@@ -114,8 +117,8 @@ tic
 
 %Parallelization added by Kassie Povinelli
 StatesCell = cellmat(NumIt, 1, 1000, 14);
-for s=1:NumIt
-%parfor s=1:NumIt % for every iteration under the same setting
+%for s=1:NumIt
+parfor s=1:NumIt % for every iteration under the same setting
     s %print out s
     %DC code
     %StatesCell(s, 1) = {DCPowerFlowSimulation(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};

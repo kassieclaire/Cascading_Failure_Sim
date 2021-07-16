@@ -320,7 +320,7 @@ function States = S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, 
             States(StateCounter,10)=MaxCap; % max capacity of failed ones
             States(StateCounter-1,8)=StateCounter;
             %temporary: print out the number of failed lines
-            fprintf('Number of failed lines: %d \n', States(StateCounter,1));
+            %fprintf('Number of failed lines: %d \n', States(StateCounter,1));
         else
             States(StateCounter,8)=-1; % It means previous state was a steady state
         
