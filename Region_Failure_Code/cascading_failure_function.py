@@ -26,6 +26,7 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
     initial_failures_mat = scipy.io.loadmat(initial_failure_table_name) #cell of arrays containing the initial failures for each iteration
     initial_failures_arrays = [l.tolist() for l in initial_failures_mat['Initial_Failure_Table']]
     initial_failures = [l.tolist()[0] for l in initial_failures_arrays[0]] #change initial failure matrix into list of lists
+    
     #print(initial_failures)
     #print(mat)
     states_column_names = ['Total Line Failures', 'Maximum failed line capacity', 
@@ -47,7 +48,6 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
     #print(states_df)
     states_df.drop(columns=['Free Space 1', 'Free Space 2', 'Free Space 3', 'Free Space 4'], inplace=True)
     #print(states_df.dtypes)
-
     ##Create new dataframe for cluster line failure information
     #cluster_failures = [[0]*number_of_lines for x in range(len(clusters))] #list of lists of cluster line failures
     cluster_failures = []
@@ -92,6 +92,7 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
         topological_factor_row = [cluster_failure / total_line_failures for cluster_failure in line_failure_row] #create the topological factor row
         cluster_failures_topological_factors.append(topological_factor_row)
     #print(cluster_failures)
+    #print(iteration_track)
     #Append region puredata to dataframe
 
     for i in range(len(clusters)):
