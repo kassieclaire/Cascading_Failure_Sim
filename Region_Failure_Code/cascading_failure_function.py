@@ -91,6 +91,8 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
         cluster_failures.append(line_failure_row + []) #append line_failure_row to the cluster_failures list of lists (matrix to be added) -- fix -- add empty list?
         topological_factor_row = [cluster_failure / total_line_failures for cluster_failure in line_failure_row] #create the topological factor row
         cluster_failures_topological_factors.append(topological_factor_row)
+    print(len(cluster_failure_track_vector))
+    print(len(states_df.index))
     #print(cluster_failures)
     #print(iteration_track)
     #Append region puredata to dataframe
@@ -125,7 +127,7 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
 
     cluster_line_failure_df = pd.DataFrame()
     #print(states_df['Total Line Failures'])
-    
+    ##REGION PMF FUNCTIONS
     if (calculate_region_failure_probabilities):
         #Format: dataframe consisting of failures in each region, then likelihood of failures for each region (region*2 columns, region combinations visited rows)
         #TODO: Got through the dataframe, find every distinct combination of region failures

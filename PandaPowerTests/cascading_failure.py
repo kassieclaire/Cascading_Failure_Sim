@@ -3,9 +3,23 @@ import numpy as np
 import scipy.io
 import matplotlib.pyplot as plt
 #Temporary for testing with IEEE118 case
-number_of_lines = 186
+#TODO: Only show data for the failure states you actually reach -- for any others, make it blank
+#TODO: Start at the number of initial failures, stop where it always stops (cascadestop=1)
+#TODO: test a range of initial line failures until stops immediately -- overlay the graphs
+#NOTE: T variable lets you see the differences between random initial failures and cascading failures resulting from simulation in the SACE model!
+#TODO: maybe change T variable into single number representing how wide it is (see the variance)
+#TODO: plot p-stop as function of variance of T
+#NOTE: on previous: for small variance (.1) failures are concentrated, say there are 2 groups -- concentrated in region 5 and region 3 (and maybe mroe groups, n groups for n clusters)
+#NOTE (Continued): Look at p-stop for all subgroups, do they all agree? -- if not, looking at variance alone is wrong!
+#superposition, aggregate, or something else?
+#TODO: answer the question: does variance matter?
+#TODO: Part 1: initial conditions rich set for IEEE39/IEEE118; Part 2: Look into question we discussed: look at p-stop as function of variance/mean of Topological variable
 
-mat = scipy.io.loadmat('result.mat') #the states matrix input -- temporary
+#IEEE39 number of lines
+number_of_lines = 46
+#number_of_lines = 186
+mat = scipy.io.loadmat('states_IEEE39') #the states matrix input -- temporary
+#mat = scipy.io.loadmat('states_IEEE118') #the states matrix input -- temporary
 #print(mat)
 states_column_names = ['Total Line Failures', 'Maximum failed line capacity', 
     'Load shed from previous step', 'Difference in Load Shed', 

@@ -1,9 +1,0 @@
-%%reduces case information
-function [mpc]=reduce_information(mpc1)
-case_to_base_off_of = loadcase('caseBase')
-branch_len = length(case_to_base_off_of.branch)
-bus_len = length(case_to_base_off_of.bus)
-gen_len = length(case_to_base_off_of.gen)
-gencost_len = length(case_to_base_off_of.gencost)
-mpc = mpc1
-end
