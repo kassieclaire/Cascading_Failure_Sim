@@ -3,7 +3,7 @@ import numpy as np
 import scipy.io
 import matplotlib.pyplot as plt
 #Temporary for testing with IEEE118 case
-#TODO: Only show data for the failure states you actually reach -- for any others, make it blank
+#DONE: TODO: Only show data for the failure states you actually reach -- for any others, make it blank
 #TODO: Start at the number of initial failures, stop where it always stops (cascadestop=1)
 #TODO: test a range of initial line failures until stops immediately -- overlay the graphs
 #NOTE: T variable lets you see the differences between random initial failures and cascading failures resulting from simulation in the SACE model!
@@ -14,7 +14,16 @@ import matplotlib.pyplot as plt
 #superposition, aggregate, or something else?
 #TODO: answer the question: does variance matter?
 #TODO: Part 1: initial conditions rich set for IEEE39/IEEE118; Part 2: Look into question we discussed: look at p-stop as function of variance/mean of Topological variable
-
+#TODO: Cmax, F P-stop curve, generate evolution using p-stop data
+#TODO: transition to different clusters
+#TODO: use the markov chain model -- generate transition matrix
+#TODO: steady-state distribution of blackout size
+#TODO: mean failures as function of time
+#TODO: calculate mean evolution of failures in Markov Chain compared to empirical
+#TODO: fix bug in simulator that prevents accurate index of failure readouts
+#TODO: see mean/variance of T PMF with T and F
+#TODO: add to simulator: specify initial T to set locations of initial failures -- randomly select lines based on T -- different lines for different sims, but same number of line failures per cluster
+#TODO: Markov chain model and Topology in parallel -- then combine the two
 #IEEE39 number of lines
 number_of_lines = 46
 #number_of_lines = 186
