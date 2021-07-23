@@ -81,6 +81,7 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
         else: #if previous state was not steady state
             if steady_state == -1: #if steady state, set restart variable to 1
                 start_detect = 1
+            test_if_in_failure_index_in_cluster = False
             for i in range(len(clusters)):
                 if line_failure_index in clusters[i]: #if line failure is in cluster i
                     #print("Incrementing cluster ", i)
@@ -88,6 +89,11 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
                     temp_cluster_failure_vec = cluster_failure_track_vector[-1] + [] #Get last vector in list of vectors
                     temp_cluster_failure_vec.append(i) #append the region of this failure to that list
                     cluster_failure_track_vector.append(temp_cluster_failure_vec) #append the cluster of the failure to the vector
+                    test_if_in_failure_index_in_cluster = True
+            if not test_if_in_failure_index_in_cluster:
+                print("ERROR: branch failure not accounted for in cluster. This could cause unexpected results. Line failure Index is: ", line_failure_index,
+                    " and total number of failures for this state is: ", total_line_failures)
+
         cluster_failures.append(line_failure_row + []) #append line_failure_row to the cluster_failures list of lists (matrix to be added) -- fix -- add empty list?
         topological_factor_row = [cluster_failure / total_line_failures for cluster_failure in line_failure_row] #create the topological factor row
         cluster_failures_topological_factors.append(topological_factor_row)

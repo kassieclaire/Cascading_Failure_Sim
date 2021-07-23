@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 #IEEE39 number of lines
 number_of_lines = 46
 #number_of_lines = 186
-mat = scipy.io.loadmat('states_IEEE39') #the states matrix input -- temporary
+mat = scipy.io.loadmat('states_IEEE39_2') #the states matrix input -- temporary
 #mat = scipy.io.loadmat('states_IEEE118') #the states matrix input -- temporary
 #print(mat)
 states_column_names = ['Total Line Failures', 'Maximum failed line capacity', 
@@ -45,9 +45,15 @@ states_df.to_csv(r'states_dataframe', index=False)
 ##Cascading Failure Curve Code
 total_states = [0] * (number_of_lines + 1)
 stable_states = [0] * (number_of_lines + 1)
+min_index = number_of_lines
+max_index = 0
 for index, row in states_df.iterrows():
     #print(row['Total Line Failures'])
     total_line_failures = row['Total Line Failures'].astype(int)
+    if total_line_failures < min_index:
+        min_index = total_line_failures
+    if total_line_failures > max_index:
+        max_index = total_line_failures
     steady_state = row['Steady State'].astype(int)
     if(total_line_failures > 0):
         total_states[total_line_failures] = total_states[total_line_failures] + 1
@@ -58,7 +64,7 @@ for i in range(number_of_lines):
     if (total_states[i] != 0):
         cascade_stop[i]=stable_states[i]/total_states[i]
 ##Plotting code
-cascading_failure_df=pd.DataFrame({'x_values' : range(0, number_of_lines+1), 'cascade_stop' : cascade_stop})
+cascading_failure_df=pd.DataFrame({'x_values' : range(min_index, max_index+1), 'cascade_stop' : cascade_stop[min_index:max_index+1]})
 fig = plt.figure()
 plt.plot('x_values', 'cascade_stop', data=cascading_failure_df, color='skyblue', linewidth=1)
 plt.xlabel('Number of Failed Lines')
