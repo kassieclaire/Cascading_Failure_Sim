@@ -1,4 +1,4 @@
-function [States, IniFtable] = S_FindingStateSpace_ANN_dataset_function(CaseName, Iterations, InitialFailures, LoadGenerationRatio, LoadShedConstant, EstimationError)
+function [States, IniFtable] = S_FindingStateSpace_ANN_dataset_function(CaseName, Iterations, InitialFailures, LoadGenerationRatio, LoadShedConstant, EstimationError) %Add initial_failure_cluster variable, set by default to -1
 %Function that returns a state space for (Topology, # of iterations, # of initial failures, load-generation ratio (r), LoadShedConstant (\theta), and capcacity estimation error (e))
 %clc;
 %clear all;
@@ -80,10 +80,18 @@ NumIt = Iterations;
 %% Generate an initial failure table
 iniFailNodes = [];
 for i=1:NumIt
+    b=InitialFailures;
     %2 or 3 failures
     % b=1+ceil(9*rand);
-    b=InitialFailures;
-    randomindex=randperm(NumBranches);
+    %if initial_failure_cluster != -1
+        %then use initial failures only from cluster
+    %end
+    %else
+    %do this
+    randomindex=randperm(NumBranches); %change this line in order to add cluster-specific initial failures
+    %TODO: change so that it takes a random permutation of the vector of
+    %branches in the cluster
+    %end
     temp=randomindex(1:b);
     %  iniFailNodes = [iniFailNodes;temp];
     IniFidx=randomindex(1:b);

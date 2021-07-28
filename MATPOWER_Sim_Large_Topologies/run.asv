@@ -12,18 +12,18 @@
 %%IEEE39_2
 clear;
 topology = 'case39';
-iterations = 1000;
+iterations = 10;
 %initialFailures = 2;
 loadGenerationRatio = .9; %reduce R
 loadShedConstant = .7;
 capacityEstimationError = .02;
 for k=1:40
     initialFailures = k;
-    run_name = append(topology, '_', 'initial_failures_count_', string(k));
+    run_name = append(topology, '_', 'initial_failures_count_', k);
     [States, Initial_Failure_Table]=S_FindingStateSpace_ANN_dataset_function(topology, iterations, initialFailures, loadGenerationRatio, loadShedConstant, capacityEstimationError);
-    if_name = append(run_name, '_if', '.mat'); %'if' stands for "initial failures"
-    sm_name = append(run_name, '_sm', '.mat'); %'sm' stands for "states matrix"
-    table_name = append(run_name, '_table.csv');
+    if_name = append(run_name + '_if' + '.mat'; %'if' stands for "initial failures"
+    sm_name = append(run_name + '_sm' + '.mat'; %'sm' stands for "states matrix"
+    table_name = append(run_name + '_table.csv';
     save(sm_name, 'States')
     save(if_name, 'Initial_Failure_Table')
     %%TABLE CREATION CODE
