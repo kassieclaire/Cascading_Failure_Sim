@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
 #IEEE39 number of lines
 number_of_lines = 46
 #number_of_lines = 186
-mat = scipy.io.loadmat('states_IEEE39_2') #the states matrix input -- temporary
+mat = scipy.io.loadmat('case39_initial_failures_count_2_sm') #the states matrix input -- temporary
 #mat = scipy.io.loadmat('states_IEEE118') #the states matrix input -- temporary
 #print(mat)
 states_column_names = ['Total Line Failures', 'Maximum failed line capacity', 

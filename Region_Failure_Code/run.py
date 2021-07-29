@@ -18,4 +18,4 @@ from cascading_failure_function import cascading_failure_function
 
 #cascading_failure_function(states_matrix_name='states_IEEE118', initial_failure_table_name='initial_failures_IEEE118', clusters_matrix_name='cluster_branch_118')
 #cascading_failure_function(clusters_matrix_name='cluster_branch_118')
-cascading_failure_function(states_matrix_name = 'states_IEEE39', initial_failure_table_name='initial_failures_IEEE39', number_of_lines = 46, clusters_matrix_name = 'cluster_branch_39')
+cascading_failure_function(states_matrix_name = 'states', initial_failure_table_name='initial_failures', number_of_lines = 186, clusters_matrix_name = 'cluster_branch_118', graph_pstop_simple=False)
