@@ -24,7 +24,9 @@ import matplotlib.pyplot as plt
 #TODO: see mean/variance of T PMF with T and F
 #TODO: add to simulator: specify initial T to set locations of initial failures -- randomly select lines based on T -- different lines for different sims, but same number of line failures per cluster
 #TODO: Markov chain model and Topology in parallel -- then combine the two
+#TODO: create mapping of mean and variance of initial T and output T mean and variance -- curve fitting
 #IEEE39 number of lines
+#TODO: create matrix for 2 failures, 4 clusters (bins) mapping mean and variance of initial T to output T mean and variance
 number_of_lines = 46
 #number_of_lines = 186
 mat = scipy.io.loadmat('states_IEEE39_2') #the states matrix input -- temporary
