@@ -62,7 +62,8 @@ def calculate_mean_and_variance(states_matrix, initial_failures, cluster_info):
                         initial_cluster_failures.append(i)
             cluster_failure_track_vector.append(initial_cluster_failures) #append the initial failures vector to the cluster_failure_track vector
             #NEW: get mean and variance of temp_cluster_failure_vec
-            mu = np.mean(initial_cluster_failures)
+            #TODO: correct this, do pmf mean instead
+            #mu = np.mean(initial_cluster_failures)
             variance = np.var(initial_cluster_failures)
             mu_vector.append(mu)
             variance_vector.append(variance)
@@ -79,7 +80,8 @@ def calculate_mean_and_variance(states_matrix, initial_failures, cluster_info):
                     temp_cluster_failure_vec.append(i) #append the region of this failure to that list
                     cluster_failure_track_vector.append(temp_cluster_failure_vec) #append the cluster of the failure to the vector
                     #NEW: get mean and variance of temp_cluster_failure_vec
-                    mu = np.mean(temp_cluster_failure_vec)
+                    #TODO: correct this, do pmf mean instead
+                    #mu = np.mean(temp_cluster_failure_vec)
                     variance = np.var(temp_cluster_failure_vec)
                     mu_vector.append(mu)
                     variance_vector.append(variance)

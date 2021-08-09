@@ -14,9 +14,9 @@ clear;
 topology = 'case39';
 iterations = 1000;
 %initialFailures = 2;
-loadGenerationRatio = .9; %reduce R
+loadGenerationRatio = .8; %reduce R
 loadShedConstant = .7;
-capacityEstimationError = .02;
+capacityEstimationError = .05;
 for k=1:40
     initialFailures = k;
     run_name = append(topology, '_', 'initial_failures_count_', string(k));
