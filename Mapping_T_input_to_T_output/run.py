@@ -2,9 +2,11 @@ from calculate_mean_and_variance import calculate_mean_and_variance
 from curve_fit_mu_and_var import curve_fit_mu_and_var
 from generate_pmf import generate_pmf
 from trim_steady_regions import trim_steady_regions
-
-(region_failure_pmf, result_in_new_failure) = generate_pmf('states_simple.csv')
-trimmed_region_failure_pmf = trim_steady_regions(region_failure_pmf, result_in_new_failure, occurrence_floor=2)
+from cascading_failure_function import cascading_failure_function
+df_name = 'test_df'
+cascading_failure_function(clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name='case39_initial_failures_count_2_sm', initial_failure_table_name='case39_initial_failures_count_2_if')
+(region_failure_pmf, result_in_new_failure) = generate_pmf(df_name)
+trimmed_region_failure_pmf = trim_steady_regions(region_failure_pmf, result_in_new_failure, occurrence_floor=1)
 print(trimmed_region_failure_pmf)
 #calculate_mean_and_variance(states_matrix, initial_failures)
 #calculate_mean_and_variance(states_matrix='states', initial_failures='initial_failures', cluster_info = 'cluster_branch_118') #This uses the example fully-generated and bug-free IEEE118 states matrix and initial failures for mu and variance testing

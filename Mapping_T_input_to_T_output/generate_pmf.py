@@ -1,16 +1,17 @@
 #Function to generate probability mass functions from given state matrix
-#Input: state dataframe with region failures calculated
+#Input: state dataframe (csv) with region failures calculated
 #Output: Dictionary of tuple region failures as keys and region failure PMFs as mapped values
 import pandas as pd
 import numpy as np
 import ast
 #import ast.literal_eval as le
 def generate_pmf(states_df):
+    if states_df[-4:-1] != ['.','c','s','v']:
+        states_df += '.csv'
     states_df = pd.read_csv(states_df)
     
     #Format: dataframe consisting of failures in each region, then likelihood of failures for each region (region*2 columns, region combinations visited rows)
     #TODO: Got through the dataframe, find every distinct combination of region failures
-    distinct_region_failure_combinations = []
     previous_region_combination = []
     region_failures_after = {}
     result_in_new_failure = {} #dictionary that keeps count of number of times that this region combination results in a new failure (index 0) and number of times it is a steady state (index 1)
