@@ -1,7 +1,12 @@
 {
-    "python.pythonPath": "/Library/Frameworks/Python.framework/Versions/3.9/bin/python3",
+    "python.pythonPath": "C:\\Users\\kassi\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
     "code-runner.executorMapByGlob": {
         "python -u" : "python3",
         "pom.xml": "cd $dir && mvn clean package"
-    }
+    },
+    "[python]": {
+
+        "editor.wordBasedSuggestions": false
+    },
+    "terminal.integrated.defaultProfile.windows": "Command Prompt"
 }

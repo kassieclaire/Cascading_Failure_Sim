@@ -291,6 +291,14 @@ function States = S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, 
             ListOfFailures(FailedIndex)=1;
             [AdjMatrix, mpc1]=S_cutLine(AdjMatrix,mpc1,FailedIndex);
         end
+        %fix for capturing failed index error values (greater than
+        %numbranches)
+        if FailedIndex > NumBranches
+            States(1,1) = -2; %set to -2 for error detection, so that it can be removed later
+            moreFailures = 0; %exit right away: ERROR occured
+            fprintf("ERROR: Failed line index outside of branch length occured: Failed line index %d \n", FailedIndex);
+            fprintf("This iteration of the simulation will be thrown out \n");
+        end
         if moreFailures==1 % If we have failure we need to save a new state
             A=find(ListOfFailures>0);
             States(StateCounter,1)=sum(ListOfFailures); % This state has only one total failure in the topology
@@ -320,7 +328,7 @@ function States = S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, 
             States(StateCounter,10)=MaxCap; % max capacity of failed ones
             States(StateCounter-1,8)=StateCounter;
             %temporary: print out the number of failed lines
-            fprintf('Number of failed lines: %d \n', States(StateCounter,1));
+            %fprintf('Number of failed lines: %d \n', States(StateCounter,1));
         else
             States(StateCounter,8)=-1; % It means previous state was a steady state
         

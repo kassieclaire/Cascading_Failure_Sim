@@ -1,4 +1,4 @@
-function [States, IniFtable] = S_FindingStateSpace_ANN_dataset_function(CaseName, Iterations, InitialFailures, LoadGenerationRatio, LoadShedConstant, EstimationError)
+function [States, IniFtable] = S_FindingStateSpace_ANN_dataset_function(CaseName, Iterations, InitialFailures, LoadGenerationRatio, LoadShedConstant, EstimationError) %Add initial_failure_cluster variable, set by default to -1
 %Function that returns a state space for (Topology, # of iterations, # of initial failures, load-generation ratio (r), LoadShedConstant (\theta), and capcacity estimation error (e))
 %clc;
 %clear all;
@@ -36,6 +36,9 @@ NumBranches = originalNumBran;
 %%
 clear mpc1; % clear because
 mpc1 = loadcase(CaseName);
+%reduce information in branch, bus, gen, gencost if more than needed
+mpc1 = reduce_information(mpc1);
+%Ready the case
 mpc1 = S_ReadyTheCase(mpc1);
 %% check if any negative load
 for i=1:NumBuses
@@ -77,10 +80,18 @@ NumIt = Iterations;
 %% Generate an initial failure table
 iniFailNodes = [];
 for i=1:NumIt
+    b=InitialFailures;
     %2 or 3 failures
     % b=1+ceil(9*rand);
-    b=InitialFailures;
-    randomindex=randperm(NumBranches);
+    %if initial_failure_cluster != -1
+        %then use initial failures only from cluster
+    %end
+    %else
+    %do this
+    randomindex=randperm(NumBranches); %change this line in order to add cluster-specific initial failures
+    %TODO: change so that it takes a random permutation of the vector of
+    %branches in the cluster
+    %end
     temp=randomindex(1:b);
     %  iniFailNodes = [iniFailNodes;temp];
     IniFidx=randomindex(1:b);
@@ -114,14 +125,30 @@ tic
 
 %Parallelization added by Kassie Povinelli
 StatesCell = cellmat(NumIt, 1, 1000, 14);
-for s=1:NumIt
-%parfor s=1:NumIt % for every iteration under the same setting
+%keep track of how many errors
+failure_track = 0;
+%for s=1:NumIt
+parfor s=1:NumIt % for every iteration under the same setting
     s %print out s
+    success = 0;
     %DC code
     %StatesCell(s, 1) = {DCPowerFlowSimulation(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};
     %AC code
-    StatesCell(s, 1) = {S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};
+    while (success == 0)
+        StatesCell(s, 1) = {S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};
+        States_Matrix = StatesCell{s, 1};
+        if States_Matrix(1,1) ~= -2
+            success = 1;
+        else
+            %otherwise try again
+            fprintf("Restarting simulation...\n");
+        end
+    end
 end
+if failure_track > 0
+    fprintf("%d iterations of simulation required restart. \n", failure_track);
+end
+   %
 %Temporary -- turn states cell array back to array
 States = cell2mat(StatesCell); %Turn cells to states matrix
 toc
