@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\kassi\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "python.pythonPath": "/usr/local/bin/python3",
     "code-runner.executorMapByGlob": {
         "python -u" : "python3",
         "pom.xml": "cd $dir && mvn clean package"

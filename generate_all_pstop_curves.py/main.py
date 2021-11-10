@@ -20,8 +20,8 @@ manually_enter_matrix = False
         # 'Capacity of Failed One', 'Time of Failure Event', 
         # 'Accumulation of Failed Capacities', 'Free Space 3', 'Demand-Loadshed Difference',
         # 'Free Space 4', 'Generation']
+#variable_name = 'Variance of T'
 variable_name = 'Mean of T'
-#variable_name = 'Mean of T'
 #variable_name = 'Variance of T'
 #variable_name = 'Maximum failed line capacity'
 
@@ -56,7 +56,7 @@ df_5_failures = states_df[states_df['Total Line Failures'] == 5]
 df_5_failures.reset_index(inplace=True)
 print(df_5_failures)
 
-p_stop_df = generate_generic_pStop(states_df = df_5_failures, variable_name = variable_name) #generate pStop dataframe
+p_stop_df = generate_generic_pStop(states_df = df_5_failures, variable_name = variable_name, amount_to_round = 2) #generate pStop dataframe
 #print(p_stop_df) #debugging: print pStop dataframe
 
 #graph the result

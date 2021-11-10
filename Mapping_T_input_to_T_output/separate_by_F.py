@@ -1,6 +1,6 @@
 def separate_by_F(pmf, steady_state_track, number_of_lines):
-    F_separated_pmf = [{} for val in range(number_of_lines)]
-    F_separated_steady_state_track = [{}] * number_of_lines
+    F_separated_pmf = {{} for val in range(number_of_lines)}
+    F_separated_steady_state_track = {{}} * number_of_lines
     #Create empty dictionaries for every count of lines reachable
     for key in pmf:
         #calculate the number of failed lines by summing the raw topological input
