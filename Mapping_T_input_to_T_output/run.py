@@ -8,7 +8,7 @@ from normalize_pmf_keys import normalize_pmf_keys
 #from separate_by_F import separate_by_F
 #NOTE: keep track of F and separate F's
 import pandas as pd
-#
+number_of_line_failures = 2
 df_name = 'test_df'
 mu_and_var_df_name = 'mean_and_variance.csv'
 number_of_lines = 46
@@ -25,10 +25,10 @@ for key in region_failure_pmf:
         pmf = region_failure_pmf[key] #grab all values minus the last (number of line failures)
         tracker = result_in_new_failure[key]
         normalized_key = tuple([float(i)/sum(list(key)) for i in list(key)])
-        print(num_failures)
+        #print(num_failures)
         #f_separated_pmf_and_new_failure_tracker[num_failures].append([pmf, tracker])
         f_separated_pmf_and_new_failure_tracker[num_failures][normalized_key] = pmf
-print(f_separated_pmf_and_new_failure_tracker[2]) #show the input Ts and output pmfs for 2 line failures
+print(f_separated_pmf_and_new_failure_tracker[number_of_line_failures]) #show the input Ts and output pmfs for 2 line failures
 
 
 #print(region_failure_pmf)
