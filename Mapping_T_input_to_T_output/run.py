@@ -5,6 +5,7 @@ from generate_pmf_with_failure_count import generate_pmf_with_failure_count
 from trim_steady_regions import trim_steady_regions
 from cascading_failure_function import cascading_failure_function
 from normalize_pmf_keys import normalize_pmf_keys
+from generate_states_dataframe_fixed import generate_states_df
 import os, sys
 #from separate_by_F import separate_by_F
 #NOTE: keep track of F and separate F's
@@ -17,27 +18,28 @@ df_name = 'test_df'
 mu_and_var_df_name = 'mean_and_variance.csv'
 number_of_lines = 46
 occurrence_floor = 5
+run_df_generation = True
 
 line_failure_counts_list = [2, 3, 7]
 num_sims_list = list(range(1,221))
 #go through multiple matrices
-combined_states_df = cascading_failure_function(clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, graph_pstop_simple=False)
+combined_states_df = generate_states_df(number_of_lines=number_of_lines, clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name)
 line_failure_count = 2 #temporary, looking only at 2
 folder_name = "F_" + str(line_failure_count) + "_IEEE_39"
 #folder_name = "F_2_IEEE_39"
 #add folder to system path
 #sys.path.append(os.path.join(os.path.dirname(__file__), folder_name))
-os.chdir(os.path.join(os.path.dirname(__file__), folder_name))
+#os.chdir(os.path.join(os.path.dirname(__file__), folder_name))
 #print("SYSTEM PATH: ", sys.path)
 for iteration in num_sims_list:
     state_matrix_name = "states_IEEE39_F_" + str(line_failure_count) + "_" + str(iteration)
     initial_failure_table_name =  "initial_failures_IEEE39_F_" + str(line_failure_count) + "_" + str(iteration)
-    temp_df = cascading_failure_function(clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, graph_pstop_simple=False)
+    temp_df = generate_states_df(number_of_lines=number_of_lines,clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, states_matrix_folder=folder_name)
     combined_states_df.append(temp_df) #append this on
-combined_states_df.to_csv(df_name, index=False)
+combined_states_df.to_csv(df_name + ".csv", index=False)
 #go back up 
 path_parent = os.path.dirname(os.getcwd())
-os.chdir(path_parent)
+#os.chdir(path_parent)
 #print system path again
 print("SYSTEM PATH: ", sys.path)
 #cascading_failure_function(clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, graph_pstop_simple=False)
