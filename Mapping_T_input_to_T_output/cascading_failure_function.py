@@ -162,3 +162,4 @@ def cascading_failure_function(states_matrix_name='states',initial_failure_table
         plt.title = "Cascade-Stop Probability vs Number of Line Failures"
         # show graph
         plt.show()
+    return states_df

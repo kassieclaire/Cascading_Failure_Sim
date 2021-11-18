@@ -5,12 +5,12 @@ def calculate_mean_and_variance(pmf_dictionary, steady_state_dictionary):
     for key in pmf_dictionary:
         #get the values for the key
         key_list = list(key)
-        key_mean = sum([i * key_list[i] for i in range(0, len(key_list))])
-        key_var = sum([i**2 * key_list[i] for i in range(0, len(key_list))]) - key_mean**2
+        key_mean = sum([(i+1) * key_list[i] for i in range(0, len(key_list))])
+        key_var = sum([(i+1)**2 * key_list[i] for i in range(0, len(key_list))]) - key_mean**2
         mean_var_key = (key_mean, key_var)
         #get the values for the mapped value
-        mapped_mean = sum([i * pmf_dictionary[key][i] for i in range(0, len(pmf_dictionary[key]))])
-        mapped_var = sum([i**2 * pmf_dictionary[key][i] for i in range(0, len(pmf_dictionary[key]))]) - mapped_mean
+        mapped_mean = sum([(i+1) * pmf_dictionary[key][i] for i in range(0, len(pmf_dictionary[key]))])
+        mapped_var = sum([(i+1)**2 * pmf_dictionary[key][i] for i in range(0, len(pmf_dictionary[key]))]) - mapped_mean
         mean_var_mapped_value = [mapped_mean, mapped_var]
         #add the result to the dictionary
         if mean_var_key not in mu_and_var:
