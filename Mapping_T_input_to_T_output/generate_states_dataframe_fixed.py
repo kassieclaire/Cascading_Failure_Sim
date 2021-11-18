@@ -73,6 +73,7 @@ def generate_states_df(states_matrix_name='states',initial_failure_table_name='i
     simulations_to_flush = [] #list of pairs containing [simulation_start_index, simulation_end_index]
     simulation_number = -1
     current_sim_error = False #keeps track if the current sim has errors
+    initial_failures_to_pop = []
     for index, row in states_df.iterrows():
         steady_state = row['Steady State'].astype(int)
         line_failure_index = row['Failed Line Index'].astype(int)
@@ -87,7 +88,9 @@ def generate_states_df(states_matrix_name='states',initial_failure_table_name='i
             if line_failure_index > number_of_lines:
                 print("ERROR: branch failure not accounted for in cluster. Flushing simulation from dataframe. Index is ", index, "Simulation is ", simulation_number)
                 #remove the initial failures vector from the table
-                print("Initial failures removed: ", initial_failures.pop(simulation_number)) #remove the initial failures for this simulation
+                initial_failures_to_pop.append(simulation_number)
+                
+                #redo this, keep track of initial failures to pop, then do afterword
                 current_sim_error = True
             if steady_state == -1: #if steady state, set restart variable to 1
                 start_detect = 1
@@ -102,6 +105,9 @@ def generate_states_df(states_matrix_name='states',initial_failure_table_name='i
         
     #flush bad simulations from dataframe
     #print("Length of states_df before flushing: ", len(states_df))
+    #go through in reverse to keep indeces together
+    for simulation in reversed(initial_failures_to_pop):
+        print("Initial failures removed: ", initial_failures.pop(simulation)) #remove the initial failures for this simulation
     for entry in reversed(simulations_to_flush):
         print("Dropping simulation")
         print(states_df.index[entry[0] : entry[1] + 1])

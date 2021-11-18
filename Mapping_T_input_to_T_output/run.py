@@ -18,25 +18,34 @@ df_name = 'test_df'
 mu_and_var_df_name = 'mean_and_variance.csv'
 number_of_lines = 46
 occurrence_floor = 5
-run_df_generation = True
+run_df_generation = False
 
-line_failure_counts_list = [2, 3, 7]
+number_of_line_failures_list = list(range(2,46))
+
+line_failure_counts_list = [[2, 220], [3, 100], [7, 300]] #initial line failure counts for simulation groups
+#num_simulations_list = [220, 100, 300]
+
 num_sims_list = list(range(1,221))
 #go through multiple matrices
 combined_states_df = generate_states_df(number_of_lines=number_of_lines, clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name)
-line_failure_count = 2 #temporary, looking only at 2
-folder_name = "F_" + str(line_failure_count) + "_IEEE_39"
+#line_failure_count = 2 #temporary, looking only at 2
+
 #folder_name = "F_2_IEEE_39"
 #add folder to system path
 #sys.path.append(os.path.join(os.path.dirname(__file__), folder_name))
 #os.chdir(os.path.join(os.path.dirname(__file__), folder_name))
 #print("SYSTEM PATH: ", sys.path)
-for iteration in num_sims_list:
-    state_matrix_name = "states_IEEE39_F_" + str(line_failure_count) + "_" + str(iteration)
-    initial_failure_table_name =  "initial_failures_IEEE39_F_" + str(line_failure_count) + "_" + str(iteration)
-    temp_df = generate_states_df(number_of_lines=number_of_lines,clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, states_matrix_folder=folder_name)
-    combined_states_df.append(temp_df) #append this on
-combined_states_df.to_csv(df_name + ".csv", index=False)
+if run_df_generation:
+    for line_failure_count_and_iterations in line_failure_counts_list:
+        line_failure_count = line_failure_count_and_iterations[0]
+        num_sims_list = list(range(1, line_failure_count_and_iterations[1]+1))
+        folder_name = "F_" + str(line_failure_count) + "_IEEE_39"
+        for iteration in num_sims_list:
+            state_matrix_name = "states_IEEE39_F_" + str(line_failure_count) + "_" + str(iteration)
+            initial_failure_table_name =  "initial_failures_IEEE39_F_" + str(line_failure_count) + "_" + str(iteration)
+            temp_df = generate_states_df(number_of_lines=number_of_lines,clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, states_matrix_folder=folder_name)
+            combined_states_df.append(temp_df) #append this on
+    combined_states_df.to_csv(df_name + ".csv", index=False)
 #go back up 
 path_parent = os.path.dirname(os.getcwd())
 #os.chdir(path_parent)
@@ -69,20 +78,26 @@ print(f_separated_pmf[number_of_line_failures]) #show the input Ts and output pm
 #debug: see if split properly
 #(trimmed_region_failure_pmf, trimmed_steady_state_track) = trim_steady_regions(region_failure_pmf, result_in_new_failure, occurrence_floor=5)
 #(normalized_pmf, normalized_steady_state_track) = normalize_pmf_keys(trimmed_region_failure_pmf, trimmed_steady_state_track, debug=True)
-mu_and_var = calculate_mean_and_variance(f_separated_pmf[number_of_line_failures], f_separated_failure_tracker[number_of_line_failures])
+f_separated_mu_and_var = [calculate_mean_and_variance(f_separated_pmf[i], f_separated_failure_tracker[i])
+    for i in number_of_line_failures_list]
+number_of_failures = []
+#mu_and_var = calculate_mean_and_variance(f_separated_pmf[number_of_line_failures], f_separated_failure_tracker[number_of_line_failures])
 #print(mu_and_var)
 input_mu = []
 output_mu = []
 input_var = []
 output_var = []
-for key in mu_and_var:
-    input_mu_and_var = list(key)
-    output_mu_and_var = mu_and_var[key]
-    input_mu.append(input_mu_and_var[0])
-    input_var.append(input_mu_and_var[1])
-    output_mu.append(output_mu_and_var[0])
-    output_var.append(output_mu_and_var[1])
-mu_and_var_df=pd.DataFrame({'mu_i' : input_mu, 'var_i' : input_var, 'mu_o' : output_mu, 'var_o' : output_var})
+for num_failures in number_of_line_failures_list:
+    mu_and_var = f_separated_mu_and_var[num_failures - number_of_line_failures_list[0]]
+    for key in mu_and_var:
+        number_of_failures.append(num_failures)
+        input_mu_and_var = list(key)
+        output_mu_and_var = mu_and_var[key]
+        input_mu.append(input_mu_and_var[0])
+        input_var.append(input_mu_and_var[1])
+        output_mu.append(output_mu_and_var[0])
+        output_var.append(output_mu_and_var[1])
+mu_and_var_df=pd.DataFrame({'F' : number_of_failures, 'mu_i' : input_mu, 'var_i' : input_var, 'mu_o' : output_mu, 'var_o' : output_var})
 print(mu_and_var_df)
 mu_and_var_df.to_csv(mu_and_var_df_name, index=False)
 
