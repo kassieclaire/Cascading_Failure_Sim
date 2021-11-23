@@ -31,11 +31,7 @@ num_sims_list = list(range(1,221))
 combined_states_df = generate_states_df(number_of_lines=number_of_lines, clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name)
 #line_failure_count = 2 #temporary, looking only at 2
 
-#folder_name = "F_2_IEEE_39"
-#add folder to system path
-#sys.path.append(os.path.join(os.path.dirname(__file__), folder_name))
-#os.chdir(os.path.join(os.path.dirname(__file__), folder_name))
-#print("SYSTEM PATH: ", sys.path)
+
 if run_df_generation:
     for line_failure_count_and_iterations in line_failure_counts_list:
         line_failure_count = line_failure_count_and_iterations[0]
@@ -49,15 +45,12 @@ if run_df_generation:
     combined_states_df.to_csv(df_name + ".csv", index=False)
 #go back up 
 path_parent = os.path.dirname(os.getcwd())
-#os.chdir(path_parent)
-#print system path again
-print("SYSTEM PATH: ", sys.path)
-#cascading_failure_function(clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, graph_pstop_simple=False)
 
-#(region_failure_pmf, result_in_new_failure) = generate_pmf(df_name)
+
+
+
 (region_failure_pmf, result_in_new_failure) = generate_pmf_with_failure_count(df_name)
-#separate failure count from region_failure_pmf and result_in_new_failure
-#print(region_failure_pmf)
+
 f_separated_pmf = [{} for _ in range(number_of_lines)]
 f_separated_failure_tracker = [{} for _ in range(number_of_lines)]
 for key in region_failure_pmf:
@@ -66,24 +59,16 @@ for key in region_failure_pmf:
         pmf = region_failure_pmf[key] #grab all values minus the last (number of line failures)
         tracker = result_in_new_failure[key]
         normalized_key = tuple([float(i)/sum(list(key)) for i in list(key)])
-        #print(num_failures)
-        #f_separated_pmf_and_new_failure_tracker[num_failures].append([pmf, tracker])
         f_separated_pmf[num_failures][normalized_key] = pmf
         f_separated_failure_tracker[num_failures][normalized_key] = tracker
 print(f_separated_pmf[number_of_line_failures]) #show the input Ts and output pmfs for 2 line failures
 
 
-#print(region_failure_pmf)
-#print(result_in_new_failure)
-#(F_categorized_pmf, F_categorized_steady_state_track) = separate_by_F(region_failure_pmf, result_in_new_failure, number_of_lines)
-#debug: see if split properly
-#(trimmed_region_failure_pmf, trimmed_steady_state_track) = trim_steady_regions(region_failure_pmf, result_in_new_failure, occurrence_floor=5)
-#(normalized_pmf, normalized_steady_state_track) = normalize_pmf_keys(trimmed_region_failure_pmf, trimmed_steady_state_track, debug=True)
+
 f_separated_mu_and_var = [calculate_mean_and_variance(f_separated_pmf[i], f_separated_failure_tracker[i])
     for i in number_of_line_failures_list]
 number_of_failures = []
-#mu_and_var = calculate_mean_and_variance(f_separated_pmf[number_of_line_failures], f_separated_failure_tracker[number_of_line_failures])
-#print(mu_and_var)
+
 input_mu = []
 output_mu = []
 input_var = []
