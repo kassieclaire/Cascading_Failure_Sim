@@ -11,19 +11,20 @@ import os, sys
 #NOTE: keep track of F and separate F's
 import pandas as pd
 number_of_line_failures = 2 #specify number of failures to look for
-go_through_all_matrices = False
 state_matrix_name = 'case39_initial_failures_count_2_sm'
 initial_failure_table_name = 'case39_initial_failures_count_2_if'
 df_name = 'test_df'
 mu_and_var_df_name = 'mean_and_variance.csv'
 number_of_lines = 46
 occurrence_floor = 5
-run_df_generation = False
+
 
 number_of_line_failures_list = list(range(2,46))
-
+############################################################################################################
+#CHANGE THIS FOR RUNS
 line_failure_counts_list = [[2, 220], [3, 100], [7, 300]] #initial line failure counts for simulation groups
-#num_simulations_list = [220, 100, 300]
+run_df_generation = False #to generate new data, set to true
+############################################################################################################
 
 num_sims_list = list(range(1,221))
 #go through multiple matrices
