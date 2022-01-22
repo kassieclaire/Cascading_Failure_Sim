@@ -1,0 +1,8 @@
+Number of iterations exceeds amount allowed for single group. Splitting into 4 simulations of max size 32
+Starting simulations from starting index 1 to ending index 32
+Starting parallel pool (parpool) using the 'local' profile ...
+Connected to the parallel pool (number of workers: 8).
+Starting simulations from starting index 33 to ending index 64
+Starting simulations from starting index 65 to ending index 96
+Starting simulations from starting index 97 to ending index 100
+Elapsed time is 223.389189 seconds.

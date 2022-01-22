@@ -1,0 +1,4 @@
+run in command line like this:
+.\cascading_failure_simulator.exe case_name iterations initial_failures load-generation_ratio load-shed_constant capacity_estimation_error output_file_name
+example of what to put in command line when whithin folder:
+.\cascading_failure_simulator.exe case118 100 3 .9 .9 .02 test_output

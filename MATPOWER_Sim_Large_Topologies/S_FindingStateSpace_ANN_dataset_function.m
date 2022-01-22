@@ -1,14 +1,14 @@
-function [States, IniFtable] = S_FindingStateSpace_ANN_dataset_function(CaseName, Iterations, InitialFailures, LoadGenerationRatio, LoadShedConstant, EstimationError) %Add initial_failure_cluster variable, set by default to -1
+function [States, IniFtable] = S_FindingStateSpace_ANN_dataset_function(CaseName, Iterations, InitialFailures, LoadGenerationRatio, LoadShedConstant, EstimationError, batch_size) %Add initial_failure_cluster variable, set by default to -1
 %Function that returns a state space for (Topology, # of iterations, # of initial failures, load-generation ratio (r), LoadShedConstant (\theta), and capcacity estimation error (e))
 %clc;
 %clear all;
 %close all;
 define_constants;
 %CaseName='case300';
+%define the batch size
+simulation_group_size = batch_size;
 
 %[originalNumBus, originalNumGen, originalNumBran, NumBuses, mpc1, LoadGenMatch, Generation, Demand, DemandIndex, FakeCapRate, FlowCap TrueCaps, NumBranches, WhichInitialLoad, OriginalMPC] = prepareCase(CaseName);
-
-
 
 FakeCapRate = 1; % fake capacity
 %% Parameter initialization
@@ -109,8 +109,8 @@ GenMatrix=mpc1.gen;
 NumGens=length(GenMatrix(:,1));
 StateCounter = 0; %counts the number of possible states
 clear States;
-limit = 10000;
-States = zeros(limit,18);
+%limit = 10000;
+%States = zeros(limit,18);
 tic
 % for s=1:NumIt
 %     if StateCounter > limit * 0.99
@@ -123,33 +123,108 @@ tic
 %     toc
 % end
 
+%Save the initial failure table in a temporary file in case simulation
+%fails, this way data is salvageable
+save("temp_if_salvage", "IniFtable");
+
 %Parallelization added by Kassie Povinelli
-StatesCell = cellmat(NumIt, 1, 1000, 14);
+%Grouping added by Kassie povinelli (2021-12-24)
+%Grouping preserves system RAM by storing results from previous simulations
+%in .mat files. This is to fix issues when working with larger simulations.
+%A recommended group size depends on the system RAM size, but for a system
+%with 16GB RAM, keep group sizes in the 100s and below 1000 (errors occur
+%around 5000 with IEEE300)
 %keep track of how many errors
 failure_track = 0;
-%for s=1:NumIt
-parfor s=1:NumIt % for every iteration under the same setting
-    s %print out s
-    success = 0;
-    %DC code
-    %StatesCell(s, 1) = {DCPowerFlowSimulation(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};
-    %AC code
-    while (success == 0)
-        StatesCell(s, 1) = {S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};
-        States_Matrix = StatesCell{s, 1};
-        if States_Matrix(1,1) ~= -2
-            success = 1;
+
+
+if (NumIt > simulation_group_size)
+    num_simulation_groups = ceil(NumIt / simulation_group_size);
+    fprintf("Number of iterations exceeds amount allowed for single group. Splitting into %d simulations of max size %d\n\r", num_simulation_groups, simulation_group_size);
+    for k=1:num_simulation_groups
+        start_index = (k-1)*simulation_group_size + 1; %start index
+        %end_index;
+        %calculate end index
+        if (k == num_simulation_groups && mod(NumIt, simulation_group_size) ~= 0)
+            end_index = start_index + mod(NumIt, simulation_group_size) - 1;
         else
-            %otherwise try again
-            fprintf("Restarting simulation...\n");
+            end_index = start_index + simulation_group_size - 1;
+        end
+        %start the group of simulations in parallel
+        fprintf("Starting simulations from starting index %d to ending index %d\n\r", start_index, end_index);
+        StatesCell = cellmat((end_index-start_index+1), 1, 10000, 14);
+        final_index = (end_index-start_index+1);
+        parfor s=1:final_index % for every iteration under the same setting
+            %s %print out s
+            success = 0;
+            state_number = start_index + s - 1;
+            %DC code
+            %StatesCell(s, 1) = {DCPowerFlowSimulation(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};
+            %AC code
+            while (success == 0)
+                StatesCell(s, 1) = {S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, state_number, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};
+                States_Matrix = StatesCell{s, 1};
+                if States_Matrix(1,1) ~= -2
+                    success = 1;
+                else
+                    %otherwise try again
+                    fprintf("Restarting simulation...\n");
+                end
+            end
+        end
+        %Temporary -- turn states cell array back to array
+        States = cell2mat(StatesCell); %Turn cells to states matrix
+        simulation_group_name = strcat("temp_", num2str(k));
+        save(simulation_group_name, "States");
+        clear StatesCell;
+        clear States;
+    end
+    %recombine the simulation data
+    group_states = load("temp_1.mat").States;
+    %could be done better, but not sure how currently
+    States = group_states;
+    for k=2:num_simulation_groups
+        group_name = strcat("temp_", num2str(k), ".mat");
+        group_states = load(group_name).States;
+        States = vertcat(States, group_states);
+        %States = [States;group_states];
+    end
+    %check if things make sense
+    if (length(find(States(:,8)==-1)) ~= NumIt)
+        fprintf("ERROR: Simulation results do not match number of iterations. Simulation results indicate %d runs, number of iterations should have been %d.\n\r", length(find(States(:,8)==-1)) , NumIt);
+    end
+    %clean up temporary files
+    for k=1:num_simulation_groups
+        group_name = strcat("temp_", num2str(k), ".mat");
+        delete(group_name);
+    end
+
+else
+    StatesCell = cellmat(NumIt, 1, 1000, 14);
+    parfor s=1:NumIt % for every iteration under the same setting
+        %s %print out s
+        success = 0;
+        %DC code
+        %StatesCell(s, 1) = {DCPowerFlowSimulation(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};
+        %AC code
+        while (success == 0)
+            StatesCell(s, 1) = {S_DCPowerFlowSimulation_ANN_dataset(OriginalMPC, NumBranches, NoCoopPercentageVector, StateCounter, TrueCaps, DGRatioVector, WhichInitialLoad, Capacity, s, IniFtable, len_DGRatioVector, len_DeltaVector, DeltaVector, len_NoCoopPercentageVector, FlowCap, DemandIndex)};
+            States_Matrix = StatesCell{s, 1};
+            if States_Matrix(1,1) ~= -2
+                success = 1;
+            else
+                %otherwise try again
+                fprintf("Restarting simulation...\n");
+            end
         end
     end
+    %Temporary -- turn states cell array back to array
+    States = cell2mat(StatesCell); %Turn cells to states matrix
 end
 if failure_track > 0
     fprintf("%d iterations of simulation required restart. \n", failure_track);
 end
    %
-%Temporary -- turn states cell array back to array
-States = cell2mat(StatesCell); %Turn cells to states matrix
+
 toc
 end

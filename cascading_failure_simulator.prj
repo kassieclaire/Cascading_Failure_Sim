@@ -1,0 +1,166 @@
+<deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
+  <configuration build-checksum="3229301744" file="C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator.prj" location="C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim" name="cascading_failure_simulator" preferred-package-location="C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>cascading_failure_simulator</param.appname>
+    <param.icon />
+    <param.icons />
+    <param.version>1.3</param.version>
+    <param.authnamewatermark>Kassie Povinelli, SACE Lab</param.authnamewatermark>
+    <param.email>kassie.povinelli@gmail.com</param.email>
+    <param.company>SACE Lab, Marquette University</param.company>
+    <param.summary>Cascading Failure Simulator for SACE Lab</param.summary>
+    <param.description>NEW IN VERSION 1.2: Performs simulations in batches of 32 (default) to preserve RAM with larger topologies (IEEE300+) AND saves initial failure table early in salvage file in case simulations do not all complete due to error. Batch size can be changed by inputing an extra value after the inputs, which will be the batch size. Choose a batch size that best suits the limits of your RAM and number of CPU cores.
+NEW IN VERSION 1.3: Fixed OSQP Error
+The inputs are as such: case name, iterations, initial failures, load-generation ratio, load-shed constant, estimation error, and output name
+case name: The name of the case file which is the initial topology of the power grid, usually a .m file (example: case118 is the IEEE118 topology)
+iterations: The number of simulations to run -- more simulations usually results in more accuracy in predictions
+initial failures: The number of initial failures to start with -- these are like trees falling on lines, or other random line failures that occur regularly in the power grid -- but could also model natural disasters and larger-scale failures
+load-generation ratio: In the range of 0 to 1, where when 1, load is equivalent to the entire generation capacity. Generally a good indicator of how much the grid is strained at the start
+load-shed constant: In the range of 0 to 1, where when it is 0, operators have full control of when to shed loads (not meet the load requirements), and when it is 1, operators have no control over what loads to meet.
+Estimation error: The maximum capacities for power lines are estimates of what they can handle without tripping. If the error for these estimates is sufficiently high, they can fail sooner than expected
+output name: the names of the output files, including the states matrix (output_name + "_sm.mat") and the initial failures table (output_name + "_if.mat")</param.description>
+    <param.screenshot />
+    <param.guid />
+    <param.installpath.string>\SACE Lab, Marquette University\cascading_failure_simulator\</param.installpath.string>
+    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.logo />
+    <param.install.notes />
+    <param.target.install.notes />
+    <param.intermediate>${PROJECT_ROOT}\cascading_failure_simulator\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\cascading_failure_simulator\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\cascading_failure_simulator\for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}\cascading_failure_simulator</param.logdir>
+    <param.enable.clean.build>false</param.enable.clean.build>
+    <param.user.defined.mcr.options />
+    <param.target.type>subtarget.standalone</param.target.type>
+    <param.support.packages />
+    <param.web.mcr>true</param.web.mcr>
+    <param.package.mcr>false</param.package.mcr>
+    <param.no.mcr>false</param.no.mcr>
+    <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
+    <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
+    <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
+    <param.windows.command.prompt>false</param.windows.command.prompt>
+    <param.create.log>true</param.create.log>
+    <param.log.file>simulation_log.txt</param.log.file>
+    <param.native.matlab>false</param.native.matlab>
+    <param.checkbox>false</param.checkbox>
+    <param.example />
+    <param.help.text>Syntax 
+	 simulate_cascade -? 
+	 simulate_cascade CaseName Iterations InitialFailures LoadGenerationRatio LoadShedConstant EstimationError output_name batch_size 
+ Input Arguments 
+	 -?  print help on how to use the application 
+	 CaseName Iterations InitialFailures LoadGenerationRatio LoadShedConstant EstimationError output_name batch_size  input arguments 
+ Description 
+ 	 NEW IN VERSION 1.2: Performs simulations in batches of 32 (default) to preserve RAM with larger topologies (IEEE300+) AND saves initial failure table early in salvage file in case simulations do not all complete due to error. Batch size can be changed by inputing an extra value after the inputs, which will be the batch size. Choose a batch size that best suits the limits of your RAM and number of CPU cores.
+NEW IN VERSION 1.3: Fixed OSQP Error
+The inputs are as such: case name, iterations, initial failures, load-generation ratio, load-shed constant, estimation error, and output name
+case name: The name of the case file which is the initial topology of the power grid, usually a .m file (example: case118 is the IEEE118 topology)
+iterations: The number of simulations to run -- more simulations usually results in more accuracy in predictions
+initial failures: The number of initial failures to start with -- these are like trees falling on lines, or other random line failures that occur regularly in the power grid -- but could also model natural disasters and larger-scale failures
+load-generation ratio: In the range of 0 to 1, where when 1, load is equivalent to the entire generation capacity. Generally a good indicator of how much the grid is strained at the start
+load-shed constant: In the range of 0 to 1, where when it is 0, operators have full control of when to shed loads (not meet the load requirements), and when it is 1, operators have no control over what loads to meet.
+Estimation error: The maximum capacities for power lines are estimates of what they can handle without tripping. If the error for these estimates is sufficiently high, they can fail sooner than expected
+output name: the names of the output files, including the states matrix (output_name + "_sm.mat") and the initial failures table (output_name + "_if.mat")</param.help.text>
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.screenshot />
+      <param.guid />
+      <param.installpath.string />
+      <param.installpath.combo />
+      <param.logo />
+      <param.install.notes />
+      <param.target.install.notes />
+      <param.intermediate />
+      <param.files.only />
+      <param.output />
+      <param.logdir />
+      <param.enable.clean.build />
+      <param.user.defined.mcr.options />
+      <param.target.type />
+      <param.support.packages />
+      <param.web.mcr />
+      <param.package.mcr />
+      <param.no.mcr />
+      <param.web.mcr.name />
+      <param.package.mcr.name />
+      <param.no.mcr.name />
+      <param.native.matlab />
+      <param.checkbox />
+      <param.example />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\simulate_cascade.m</file>
+    </fileset.main>
+    <fileset.resources>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\ACTIVSg2000.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\caseBase.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\loadcase.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\matpower7.1</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\reduce_information.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\run.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_CapFinder.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_cutLine.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_DCPowerFlowSimulation_ANN_dataset.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_DispatchPowerGrid.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_FindFailedLink.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_FindFullLoadOfGrid.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_FindingStateSpace_ANN_dataset_function.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_islandedGrid.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_MakePartialLSContGrid.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_ReadyTheCase.m</file>
+      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_SeperateGenAndLoad.m</file>
+    </fileset.resources>
+    <fileset.package />
+    <fileset.depfun>
+      <file>${PROJECT_ROOT}\osqp\osqp-0.6.2-matlab-windows64\codegen\make_emosqp.m</file>
+      <file>${PROJECT_ROOT}\osqp\osqp-0.6.2-matlab-windows64\codegen\render_workspace.m</file>
+      <file>${PROJECT_ROOT}\osqp\osqp-0.6.2-matlab-windows64\osqp_mex.mexw64</file>
+    </fileset.depfun>
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}\cascading_failure_simulator\for_testing" name="cascading_failure_simulator.exe" optional="false">C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator\for_testing\cascading_failure_simulator.exe</file>
+      <file location="${PROJECT_ROOT}\cascading_failure_simulator\for_testing" name="readme.txt" optional="true">C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator\for_testing\readme.txt</file>
+      <file location="${PROJECT_ROOT}\cascading_failure_simulator\for_testing" name="splash.png" optional="false">C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator\for_testing\splash.png</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>E:\MATLAB_2021b</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+        <toolbox name="gpucoder" />
+        <toolbox name="neuralnetwork" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
+      <toolbox>
+        <neuralnetwork>
+          <enabled>true</enabled>
+        </neuralnetwork>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>
