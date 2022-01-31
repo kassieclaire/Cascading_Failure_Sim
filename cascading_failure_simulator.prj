@@ -1,15 +1,16 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="3229301744" file="C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator.prj" location="C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim" name="cascading_failure_simulator" preferred-package-location="C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="1414813450" file="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator.prj" location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim" name="cascading_failure_simulator" preferred-package-location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_redistribution" preferred-package-type="package.type.app" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>cascading_failure_simulator</param.appname>
     <param.icon />
     <param.icons />
-    <param.version>1.3</param.version>
+    <param.version>1.4</param.version>
     <param.authnamewatermark>Kassie Povinelli, SACE Lab</param.authnamewatermark>
     <param.email>kassie.povinelli@gmail.com</param.email>
     <param.company>SACE Lab, Marquette University</param.company>
     <param.summary>Cascading Failure Simulator for SACE Lab</param.summary>
     <param.description>NEW IN VERSION 1.2: Performs simulations in batches of 32 (default) to preserve RAM with larger topologies (IEEE300+) AND saves initial failure table early in salvage file in case simulations do not all complete due to error. Batch size can be changed by inputing an extra value after the inputs, which will be the batch size. Choose a batch size that best suits the limits of your RAM and number of CPU cores.
 NEW IN VERSION 1.3: Fixed OSQP Error
+NEW IN VERSION 1.4: Added option to input arguments via file (input.txt)
 The inputs are as such: case name, iterations, initial failures, load-generation ratio, load-shed constant, estimation error, and output name
 case name: The name of the case file which is the initial topology of the power grid, usually a .m file (example: case118 is the IEEE118 topology)
 iterations: The number of simulations to run -- more simulations usually results in more accuracy in predictions
@@ -20,15 +21,23 @@ Estimation error: The maximum capacities for power lines are estimates of what t
 output name: the names of the output files, including the states matrix (output_name + "_sm.mat") and the initial failures table (output_name + "_if.mat")</param.description>
     <param.screenshot />
     <param.guid />
-    <param.installpath.string>\SACE Lab, Marquette University\cascading_failure_simulator\</param.installpath.string>
-    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.installpath.string>/SACE_Lab,_Marquette_University/cascading_failure_simulator/</param.installpath.string>
+    <param.installpath.combo>option.installpath.systemwideapp</param.installpath.combo>
     <param.logo />
     <param.install.notes />
-    <param.target.install.notes />
-    <param.intermediate>${PROJECT_ROOT}\cascading_failure_simulator\for_testing</param.intermediate>
-    <param.files.only>${PROJECT_ROOT}\cascading_failure_simulator\for_redistribution_files_only</param.files.only>
-    <param.output>${PROJECT_ROOT}\cascading_failure_simulator\for_redistribution</param.output>
-    <param.logdir>${PROJECT_ROOT}\cascading_failure_simulator</param.logdir>
+    <param.target.install.notes>In the following directions, replace MR/v911 by the directory on the target machine where MATLAB is installed, or MR by the directory where the MATLAB Runtime is installed.
+
+If the environment variable DYLD_LIBRARY_PATH is undefined, set it to the following string:
+
+MR/v911/runtime/maci64:MR/v911/sys/os/maci64:MR/v911/bin/maci64
+
+If it is defined, set it to the following:
+
+${DYLD_LIBRARY_PATH}:MR/v911/runtime/maci64:MR/v911/sys/os/maci64:MR/v911/bin/maci64</param.target.install.notes>
+    <param.intermediate>${PROJECT_ROOT}/cascading_failure_simulator/for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}/cascading_failure_simulator/for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}/cascading_failure_simulator/for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}/cascading_failure_simulator</param.logdir>
     <param.enable.clean.build>false</param.enable.clean.build>
     <param.user.defined.mcr.options />
     <param.target.type>subtarget.standalone</param.target.type>
@@ -54,6 +63,7 @@ output name: the names of the output files, including the states matrix (output_
  Description 
  	 NEW IN VERSION 1.2: Performs simulations in batches of 32 (default) to preserve RAM with larger topologies (IEEE300+) AND saves initial failure table early in salvage file in case simulations do not all complete due to error. Batch size can be changed by inputing an extra value after the inputs, which will be the batch size. Choose a batch size that best suits the limits of your RAM and number of CPU cores.
 NEW IN VERSION 1.3: Fixed OSQP Error
+NEW IN VERSION 1.4: Added option to input arguments via file (input.txt)
 The inputs are as such: case name, iterations, initial failures, load-generation ratio, load-shed constant, estimation error, and output name
 case name: The name of the case file which is the initial topology of the power grid, usually a .m file (example: case118 is the IEEE118 topology)
 iterations: The number of simulations to run -- more simulations usually results in more accuracy in predictions
@@ -71,7 +81,6 @@ output name: the names of the output files, including the states matrix (output_
       <param.installpath.combo />
       <param.logo />
       <param.install.notes />
-      <param.target.install.notes />
       <param.intermediate />
       <param.files.only />
       <param.output />
@@ -86,49 +95,49 @@ output name: the names of the output files, including the states matrix (output_
       <param.web.mcr.name />
       <param.package.mcr.name />
       <param.no.mcr.name />
+      <param.windows.command.prompt />
       <param.native.matlab />
       <param.checkbox />
       <param.example />
     </unset>
     <fileset.main>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\simulate_cascade.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/simulate_cascade.m</file>
     </fileset.main>
     <fileset.resources>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\ACTIVSg2000.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\caseBase.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\loadcase.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\matpower7.1</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\reduce_information.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\run.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_CapFinder.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_cutLine.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_DCPowerFlowSimulation_ANN_dataset.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_DispatchPowerGrid.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_FindFailedLink.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_FindFullLoadOfGrid.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_FindingStateSpace_ANN_dataset_function.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_islandedGrid.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_MakePartialLSContGrid.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_ReadyTheCase.m</file>
-      <file>${PROJECT_ROOT}\MATPOWER_Sim_Large_Topologies\S_SeperateGenAndLoad.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/ACTIVSg2000.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_CapFinder.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_DCPowerFlowSimulation_ANN_dataset.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_DispatchPowerGrid.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_FindFailedLink.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_FindFullLoadOfGrid.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_FindingStateSpace_ANN_dataset_function.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_MakePartialLSContGrid.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_ReadyTheCase.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_SeperateGenAndLoad.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_cutLine.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/S_islandedGrid.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/caseBase.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/input.txt</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/loadcase.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/matpower7.1</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/reduce_information.m</file>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/run.m</file>
     </fileset.resources>
-    <fileset.package />
-    <fileset.depfun>
-      <file>${PROJECT_ROOT}\osqp\osqp-0.6.2-matlab-windows64\codegen\make_emosqp.m</file>
-      <file>${PROJECT_ROOT}\osqp\osqp-0.6.2-matlab-windows64\codegen\render_workspace.m</file>
-      <file>${PROJECT_ROOT}\osqp\osqp-0.6.2-matlab-windows64\osqp_mex.mexw64</file>
-    </fileset.depfun>
+    <fileset.package>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/input.txt</file>
+    </fileset.package>
+    <fileset.depfun />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\cascading_failure_simulator\for_testing" name="cascading_failure_simulator.exe" optional="false">C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator\for_testing\cascading_failure_simulator.exe</file>
-      <file location="${PROJECT_ROOT}\cascading_failure_simulator\for_testing" name="readme.txt" optional="true">C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator\for_testing\readme.txt</file>
-      <file location="${PROJECT_ROOT}\cascading_failure_simulator\for_testing" name="splash.png" optional="false">C:\Users\kassi\OneDrive\Documents\Cascading_Failure_Sim\cascading_failure_simulator\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}/cascading_failure_simulator/for_testing" name="splash.png" optional="false">/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_testing/splash.png</file>
+      <file location="${PROJECT_ROOT}/cascading_failure_simulator/for_testing" name="readme.txt" optional="true">/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_testing/readme.txt</file>
+      <file location="${PROJECT_ROOT}/cascading_failure_simulator/for_testing" name="run_cascading_failure_simulator.sh" optional="false">/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_testing/run_cascading_failure_simulator.sh</file>
+      <file location="${PROJECT_ROOT}/cascading_failure_simulator/for_testing" name="cascading_failure_simulator.app" optional="false">/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_testing/cascading_failure_simulator.app</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>E:\MATLAB_2021b</root>
+      <root>/Applications/MATLAB_R2021b.app</root>
       <toolboxes>
         <toolbox name="matlabcoder" />
-        <toolbox name="gpucoder" />
         <toolbox name="neuralnetwork" />
       </toolboxes>
       <toolbox>
@@ -137,29 +146,24 @@ output name: the names of the output files, including the states matrix (output_
         </matlabcoder>
       </toolbox>
       <toolbox>
-        <gpucoder>
-          <enabled>true</enabled>
-        </gpucoder>
-      </toolbox>
-      <toolbox>
         <neuralnetwork>
           <enabled>true</enabled>
         </neuralnetwork>
       </toolbox>
     </matlab>
     <platform>
-      <unix>false</unix>
-      <mac>false</mac>
-      <windows>true</windows>
+      <unix>true</unix>
+      <mac>true</mac>
+      <windows>false</windows>
       <win2k>false</win2k>
       <winxp>false</winxp>
       <vista>false</vista>
       <linux>false</linux>
       <solaris>false</solaris>
-      <osver>10.0</osver>
+      <osver>12.1</osver>
       <os32>false</os32>
       <os64>true</os64>
-      <arch>win64</arch>
+      <arch>maci64</arch>
       <matlab>true</matlab>
     </platform>
   </configuration>

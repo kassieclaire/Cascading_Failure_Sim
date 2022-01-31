@@ -11,7 +11,7 @@ To find its location, enter
 at the MATLAB prompt.
 NOTE: You will need administrator rights to run the MATLAB Runtime installer. 
 
-Alternatively, download and install the Windows version of the MATLAB Runtime for R2021b 
+Alternatively, download and install the Macintosh version of the MATLAB Runtime for R2021b 
 from the following link on the MathWorks website:
 
     https://www.mathworks.com/products/compiler/mcr/index.html
@@ -24,12 +24,36 @@ in the MathWorks Documentation Center.
 
 Files to Package for Standalone 
 ================================
--cascading_failure_simulator.exe
--MCRInstaller.exe 
+-run_cascading_failure_simulator.sh (shell script for temporarily setting environment 
+                                     variables and executing the application)
+   -to run the shell script, type
+   
+       ./run_cascading_failure_simulator.sh <mcr_directory> <argument_list>
+       
+    at Linux or Mac command prompt. <mcr_directory> is the directory 
+    where version 9.11 of the MATLAB Runtime is installed or the directory where 
+    MATLAB is installed on the machine. <argument_list> is all the 
+    arguments you want to pass to your application. For example, 
+
+    If you have version 9.11 of the MATLAB Runtime installed in 
+    /mathworks/home/application/v911, run the shell script as:
+    
+       ./run_cascading_failure_simulator.sh /mathworks/home/application/v911
+       
+    If you have MATLAB installed in /mathworks/devel/application/matlab, 
+    run the shell script as:
+    
+       ./run_cascading_failure_simulator.sh /mathworks/devel/application/matlab
+-MCRInstaller.zip 
     Note: if end users are unable to download the MATLAB Runtime using the
     instructions in the previous section, include it when building your 
     component by clicking the "Runtime included in package" link in the
     Deployment Tool.
+-The Macintosh bundle directory structure cascading_failure_simulator.app 
+    Note: this can be stored in an archive file with the zip command 
+    zip -r cascading_failure_simulator.zip cascading_failure_simulator.app
+    or the tar command 
+    tar -cvf cascading_failure_simulator.tar cascading_failure_simulator.app
 -This readme file 
 
 
@@ -42,6 +66,43 @@ Getting Started > About Application Deployment >
 Deployment Product Terms in the MathWorks Documentation
 Center.
 
+4. Appendix 
+
+A. Mac systems:
+In the following directions, replace MR/v911 by the directory on the target machine where 
+   MATLAB is installed, or MR by the directory where the MATLAB Runtime is installed.
+
+If the environment variable DYLD_LIBRARY_PATH is undefined, set it to the following 
+   string:
+
+MR/v911/runtime/maci64:MR/v911/sys/os/maci64:MR/v911/bin/maci64
+
+If it is defined, set it to the following:
+
+${DYLD_LIBRARY_PATH}:MR/v911/runtime/maci64:MR/v911/sys/os/maci64:MR/v911/bin/maci64
+
+    For more detailed information about setting the MATLAB Runtime paths, see Package and 
+   Distribute in the MATLAB Compiler documentation in the MathWorks Documentation Center.
+
+
+     
+        NOTE: To make these changes persistent after logout on Linux 
+              or Mac machines, modify the .cshrc file to include this  
+              setenv command.
+        NOTE: The environment variable syntax utilizes forward 
+              slashes (/), delimited by colons (:).  
+        NOTE: When deploying standalone applications, you can
+              run the shell script file run_cascading_failure_simulator.sh 
+              instead of setting environment variables. See 
+              section 2 "Files to Deploy and Package".    
+
+
+
+5. Launching application using Macintosh finder
+
+If the application is purely graphical, that is, it doesn't read from standard in or 
+write to standard out or standard error, it may be launched in the finder just like any 
+other Macintosh application.
 
 
 
