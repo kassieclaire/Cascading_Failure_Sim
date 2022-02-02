@@ -1,0 +1,6 @@
+Find out how strongly pstop depends on T
+- Change generation of mean and var to include pstop as an extra variable 
+- go to new F, go to bunch of Cmaxes with given probabilities + (NEW!) different T-vectors
+- For each new Cmax have a bunch of Ts -- as long as for a given F, distribution of new failure doesn't really depend on Cmax -- validate this
+- Going to new T-vector has F parameterized in it, but not Cmax -- ok to ignore, don't really care
+- Check the above assumption through simulation!!!!!!
