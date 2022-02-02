@@ -4,3 +4,4 @@ Find out how strongly pstop depends on T
 - For each new Cmax have a bunch of Ts -- as long as for a given F, distribution of new failure doesn't really depend on Cmax -- validate this
 - Going to new T-vector has F parameterized in it, but not Cmax -- ok to ignore, don't really care
 - Check the above assumption through simulation!!!!!!
+- Does Pstop depend no T? -- if no, we can use the previous SACE pstop and assign the distribution according to the current mapping
