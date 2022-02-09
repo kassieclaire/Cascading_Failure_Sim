@@ -5,3 +5,11 @@ Find out how strongly pstop depends on T
 - Going to new T-vector has F parameterized in it, but not Cmax -- ok to ignore, don't really care
 - Check the above assumption through simulation!!!!!!
 - Does Pstop depend no T? -- if no, we can use the previous SACE pstop and assign the distribution according to the current mapping
+- Pstop as function of bin number of mu, mean
+- come up with g
+- make variance binary -- small vs. big -- threshold
+- mean -- pstop depends on f -- make that function of mean and variance too -- 
+- Leave Cmax as-is maintain superposition model
+- start the meeting with the questions we wanted answered
+    - Does T depend  on Cmax?
+    - Does 

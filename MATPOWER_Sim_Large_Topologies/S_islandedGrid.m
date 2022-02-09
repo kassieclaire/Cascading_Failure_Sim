@@ -186,7 +186,7 @@ for k=1:SS % Number of islands
             opt=mpoption('VERBOSE',0,'OUT_SYS_SUM',0,'OUT_ALL',0,'OUT_BUS',0,'OUT_BRANCH',0,'OUT_ALL_LIM',0);
             [result2, success]=rundcopf(mpc2,opt);
             %[result2, success]=rundcopf(mpc2);
-            result2222= result2;
+            %result2= result2;
             WhatToAddIfNotConverge=mpc2.branch(:,6).* (0.1);
             %%THIS IS A POINT WHERE IT GETS STUCK
             while(success==0)
