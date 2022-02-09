@@ -14,7 +14,7 @@ def generate_generic_pStop(states_df, variable_name = 'Total Line Failures', amo
     variable_vector = []
     #check if float64
     if isinstance(states_df[variable_name][0], float):
-        print("Values are float, rounding to 1 decimal place")
+        print("Values are float, rounding to ", amount_to_round, " decimal place")
         variable_vector = [round(val, amount_to_round) for val in states_df[variable_name]]
     else:
         variable_vector = states_df[variable_name]
