@@ -35,9 +35,9 @@ if (manually_enter_matrix):
             states_df = generate_states_df(clusters_matrix_name=cluster_matrix_name, states_matrix_name=states_matrix_name, initial_failure_table_name=initial_failure_table_name, number_of_lines=46)
         else:
             states_df.append(generate_states_df(clusters_matrix_name=cluster_matrix_name, states_matrix_name=states_matrix_name, initial_failure_table_name=initial_failure_table_name, number_of_lines=46))
-    states_df.to_csv("Large_states_df.csv", index=False)
+    states_df.to_csv("test_df.csv", index=False)
 else:
-    states_df = pd.read_csv("Large_states_df.csv")
+    states_df = pd.read_csv("test_df.csv")
     states_df = states_df.astype({'Total Line Failures' : int, 'Maximum failed line capacity' : int, 
         'Load shed from previous step' : float, 'Difference in Load Shed' : float, 
         'Load' : float, 'Steady State' : int, 
