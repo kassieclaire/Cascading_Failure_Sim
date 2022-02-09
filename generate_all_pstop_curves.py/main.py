@@ -45,17 +45,14 @@ else:
         'Capacity of Failed One' : float, 'Time of Failure Event' : float, 
         'Accumulation of Failed Capacities' : int, 'Demand-Loadshed Difference' : float,
         'Generation' : float})
-#print(states_df.head())
-#print("generated df")
-#print(len(states_df))
-#print(type(states_df[variable_name]))
 
-#print(states_df)
 #create p_stop curve
+##TEMPORARY CODE FOR SETTING NUMBER OF FAILURES (CURRENTLY SET AT 5)
 df_5_failures = states_df[states_df['Total Line Failures'] == 5]
 df_5_failures.reset_index(inplace=True)
 print(df_5_failures)
 
+##SECTION OF INTEREST
 p_stop_df = generate_generic_pStop(states_df = df_5_failures, variable_name = variable_name, amount_to_round = 2) #generate pStop dataframe
 #print(p_stop_df) #debugging: print pStop dataframe
 
