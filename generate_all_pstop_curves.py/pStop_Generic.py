@@ -7,6 +7,8 @@ from math import log10, floor
 #DONE: TODO: Cluster lines based on bus clusters
 #Talk to Brad or Matt to get into workstation, get IP address of workstation in lab -- ask Jamir
 #TODO: probability mass distribution given fixed number of failures -- with Jamir/AJ
+#TODO: 02-09-2022: Be able to set F for the Pstop using this function -- such that we can look at the curve for a specific F
+#TODO: 02-09-2022: B able to set mean/variance for Pstop so that we can look at pstop over range of variance (fix mean/F) and mean (fix variance/F) values
 def generate_generic_pStop(states_df, variable_name = 'Total Line Failures', amount_to_round = 1):
     
     variable_vector = []
