@@ -1,4 +1,6 @@
 from re import A
+
+from numpy import number
 from calculate_mean_and_variance import calculate_mean_and_variance
 from calculate_mean_and_variance_with_c import calculate_mean_and_variance_with_c
 from curve_fit_mu_and_var import curve_fit_mu_and_var
@@ -27,6 +29,7 @@ number_of_line_failures_list = list(range(2,46))
 #CHANGE THIS FOR RUNS
 line_failure_counts_list = [[2, 220], [3, 100], [7, 300]] #initial line failure counts for simulation groups
 run_df_generation = False #to generate new data, set to true
+run_df_generation_118 = True
 use_max_cap = True #to test with max cap on top of line failures -- to see if max cap impacts pmf -- set to true
 ############################################################################################################
 
@@ -45,6 +48,13 @@ if run_df_generation:
             temp_df = generate_states_df(number_of_lines=number_of_lines,clusters_matrix_name='cluster_branch_39', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, states_matrix_folder=folder_name)
             combined_states_df.append(temp_df) #append this on
     combined_states_df.to_csv(df_name + ".csv", index=False)
+elif run_df_generation_118:
+    number_of_lines=186
+    folder_name = 'IEEE_118_sims'
+    state_matrix_name = 'case118_2_7_1_1_sm'
+    initial_failure_table_name = 'case118_2_7_1_1_if'
+    combined_states_df = generate_states_df(number_of_lines=number_of_lines, clusters_matrix_name='cluster_branch_118', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, states_matrix_folder=folder_name)
+
 #go back up 
 path_parent = os.path.dirname(os.getcwd())
 

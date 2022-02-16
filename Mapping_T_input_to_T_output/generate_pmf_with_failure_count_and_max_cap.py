@@ -28,7 +28,7 @@ def generate_pmf_with_failure_count_and_cap(states_df):
         #add on the total number of failures as an identifier to the end
         #region_combination.append(row["Total Line Failures"])
         #ADD CAPACITY HERE
-        capacity = row["Capacity of Failed One"] #TODO: check if this is right
+        capacity = row["Capacity of Failed Ones 2"] #TODO: check if this is right
         #try adding this to the region_combination -- it is an extra descriptive value to use in the key
         region_combination.append(capacity) #TODO: TEST THIS! -- edit where sum of region combination is used too
         #convert to tuple
