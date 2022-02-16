@@ -6,7 +6,7 @@ import numpy as np
 import ast
 #import ast.literal_eval as le
 def generate_pmf_with_failure_count_and_cap(states_df):
-    if states_df[-4:-1] != ['.','c','s','v']:
+    if states_df[-4:len(states_df)] != ['.','c','s','v']:
         states_df += '.csv'
     states_df = pd.read_csv(states_df)
     
