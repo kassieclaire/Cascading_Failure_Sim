@@ -13,3 +13,8 @@ Find out how strongly pstop depends on T
 - start the meeting with the questions we wanted answered
     - Does T depend  on Cmax?
     - Does 
+- quantify the non-relationship (or relationship) between CMax and outputs for g function
+    - Graph, for certain F, mu input, mu output, how CMax influnces:
+        - mean
+        - variance
+- Generate more 118 cases
