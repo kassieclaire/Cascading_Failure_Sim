@@ -7,7 +7,8 @@ Find out how strongly pstop depends on T
 - Does Pstop depend no T? -- if no, we can use the previous SACE pstop and assign the distribution according to the current mapping
 - Pstop as function of bin number of mu, mean
 - come up with g
-- make variance binary -- small vs. big -- threshold
+- make variance binary -- small vs. big -- threshold -- same with mean -- IMPORTANT
+    - use cluster plots to create two clusters of data points
 - mean -- pstop depends on f -- make that function of mean and variance too -- 
 - Leave Cmax as-is maintain superposition model
 - start the meeting with the questions we wanted answered
