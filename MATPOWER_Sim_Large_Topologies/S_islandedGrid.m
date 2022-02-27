@@ -2,6 +2,13 @@
 % island and return the vector of the flow over the lines (P) and the
 % vector of generation and demand in (G)
 function [G,P,VB]=S_islandedGrid(mpc1,Components,SS)
+%extra variable to count the number of failures of convergence -- throw
+%away a simulation if it fails too many times -- if this happens too often,
+%we need a different solver setup/method for this case!
+%convergence_failure_counter = 0;
+%max_convergence_failure = 100;
+%convergence_hack = 1.0; %use this value to try forcing convergence
+
 define_constants;
 NumBranches=length(mpc1.branch(:,1));
 NumBuses=length(mpc1.bus(:,1));
@@ -183,18 +190,30 @@ for k=1:SS % Number of islands
                 mpc2.bus(GreferenceI,2)=3;
             end         
             success=0;
-            opt=mpoption('VERBOSE',0,'OUT_SYS_SUM',0,'OUT_ALL',0,'OUT_BUS',0,'OUT_BRANCH',0,'OUT_ALL_LIM',0);
+            %opt=mpoption('VERBOSE',0,'OUT_SYS_SUM',0,'OUT_ALL',0,'OUT_BUS',0,'OUT_BRANCH',0,'OUT_ALL_LIM',0, 'OPF_ALG_DC', 'OT'); %small change here 2022-02-26: changing dc solver to try and get around issue
+            %change: changed to new names for mpoption
+            opt=mpoption('verbose', 0, 'out.all', 0, 'opf.dc.solver', 'OT');
+
+
             [result2, success]=rundcopf(mpc2,opt);
             %[result2, success]=rundcopf(mpc2);
             %result2= result2;
             WhatToAddIfNotConverge=mpc2.branch(:,6).* (0.1);
             %%THIS IS A POINT WHERE IT GETS STUCK
+            %if convergence_failure_counter > max_convergence_failure
+             %   fprintf("Failed to converge after failure, use a different solver!\n")
+              %  convergence_failure_counter = 0;
+               % convergence_hack = convergence_hack * 1.5;
+            %end
             while(success==0)
+                %convergence_failure_counter = convergence_failure_counter + 1;
                 %uncomment to debug flowrate not converging
                 %fprintf("Rate A value after optimization failure: %f.2\n", mpc2.branch(:,6))
                 mpc2.branch(:,6)=mpc2.branch(:,6)+WhatToAddIfNotConverge; %Why do we add this?
                 %opt=mpoption('VERBOSE',1,'OUT_ALL',0,'OUT_BUS',0,'OUT_BRANCH',0,'OUT_ALL_LIM',0);
-                opt=mpoption('VERBOSE',0,'OUT_ALL',0,'OUT_BUS',0,'OUT_BRANCH',0,'OUT_ALL_LIM',0);
+                %opt=mpoption('VERBOSE',0,'OUT_SYS_SUM',0, 'OUT_ALL',0,'OUT_BUS',0,'OUT_BRANCH',0,'OUT_ALL_LIM',0, 'OPF_ALG_DC', 'OT'); %small change here 2022-02-26: changing dc solver to try and get around issue
+                %change: changed to new names for mpoption
+                opt=mpoption('verbose', 0, 'out.all', 0, 'opf.dc.solver', 'OT');
                 [result2, success]=rundcopf(mpc2,opt);
             end
             %%RIGHT HERE

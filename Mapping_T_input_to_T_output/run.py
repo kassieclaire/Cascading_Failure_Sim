@@ -20,16 +20,18 @@ state_matrix_name = 'case39_initial_failures_count_2_sm'
 initial_failure_table_name = 'case39_initial_failures_count_2_if'
 df_name = 'test_df'
 mu_and_var_df_name = 'mean_and_variance.csv'
-number_of_lines = 46
+#change these values according to the input
+initial_failures_floor = 3
+number_of_lines = 186
 occurrence_floor = 5
 
 
-number_of_line_failures_list = list(range(2,46))
+number_of_line_failures_list = list(range(initial_failures_floor,number_of_lines))
 ############################################################################################################
 #CHANGE THIS FOR RUNS
 line_failure_counts_list = [[2, 220], [3, 100], [7, 300]] #initial line failure counts for simulation groups
 run_df_generation = False #to generate new data, set to true
-run_df_generation_118 = True
+run_df_generation_118 = False
 use_max_cap = True #to test with max cap on top of line failures -- to see if max cap impacts pmf -- set to true
 ############################################################################################################
 
@@ -51,8 +53,8 @@ if run_df_generation:
 elif run_df_generation_118:
     number_of_lines=186
     folder_name = 'IEEE_118_sims'
-    state_matrix_name = 'case118_2_7_1_1_sm'
-    initial_failure_table_name = 'case118_2_7_1_1_if'
+    state_matrix_name = 'case118_f3_r7_t5_e1_i100000_sm'
+    initial_failure_table_name = 'case118_f3_r7_t5_e1_i100000_if'
     combined_states_df = generate_states_df(number_of_lines=number_of_lines, clusters_matrix_name='cluster_branch_118', output_df_name=df_name, use_simplified_df=True, states_matrix_name=state_matrix_name, initial_failure_table_name=initial_failure_table_name, states_matrix_folder=folder_name)
 
 #go back up 

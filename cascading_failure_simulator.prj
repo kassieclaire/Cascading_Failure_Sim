@@ -1,14 +1,15 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="1414813450" file="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator.prj" location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim" name="cascading_failure_simulator" preferred-package-location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_redistribution" preferred-package-type="package.type.app" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="2604728371" file="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator.prj" location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim" name="cascading_failure_simulator" preferred-package-location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_redistribution" preferred-package-type="package.type.app" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>cascading_failure_simulator</param.appname>
     <param.icon />
     <param.icons />
-    <param.version>1.4</param.version>
+    <param.version>1.5</param.version>
     <param.authnamewatermark>Kassie Povinelli, SACE Lab</param.authnamewatermark>
     <param.email>kassie.povinelli@gmail.com</param.email>
     <param.company>SACE Lab, Marquette University</param.company>
     <param.summary>Cascading Failure Simulator for SACE Lab</param.summary>
-    <param.description>NEW IN VERSION 1.2: Performs simulations in batches of 32 (default) to preserve RAM with larger topologies (IEEE300+) AND saves initial failure table early in salvage file in case simulations do not all complete due to error. Batch size can be changed by inputing an extra value after the inputs, which will be the batch size. Choose a batch size that best suits the limits of your RAM and number of CPU cores.
+    <param.description>NEW IN VERSION 1.5: Changed solver to Optimization Toolbox -- better compatibility
+NEW IN VERSION 1.2: Performs simulations in batches of 32 (default) to preserve RAM with larger topologies (IEEE300+) AND saves initial failure table early in salvage file in case simulations do not all complete due to error. Batch size can be changed by inputing an extra value after the inputs, which will be the batch size. Choose a batch size that best suits the limits of your RAM and number of CPU cores.
 NEW IN VERSION 1.3: Fixed OSQP Error
 NEW IN VERSION 1.4: Added option to input arguments via file (input.txt)
 The inputs are as such: case name, iterations, initial failures, load-generation ratio, load-shed constant, estimation error, and output name
@@ -61,7 +62,8 @@ ${DYLD_LIBRARY_PATH}:MR/v911/runtime/maci64:MR/v911/sys/os/maci64:MR/v911/bin/ma
 	 -?  print help on how to use the application 
 	 CaseName Iterations InitialFailures LoadGenerationRatio LoadShedConstant EstimationError output_name batch_size  input arguments 
  Description 
- 	 NEW IN VERSION 1.2: Performs simulations in batches of 32 (default) to preserve RAM with larger topologies (IEEE300+) AND saves initial failure table early in salvage file in case simulations do not all complete due to error. Batch size can be changed by inputing an extra value after the inputs, which will be the batch size. Choose a batch size that best suits the limits of your RAM and number of CPU cores.
+ 	 NEW IN VERSION 1.5: Changed solver to Optimization Toolbox -- better compatibility
+NEW IN VERSION 1.2: Performs simulations in batches of 32 (default) to preserve RAM with larger topologies (IEEE300+) AND saves initial failure table early in salvage file in case simulations do not all complete due to error. Batch size can be changed by inputing an extra value after the inputs, which will be the batch size. Choose a batch size that best suits the limits of your RAM and number of CPU cores.
 NEW IN VERSION 1.3: Fixed OSQP Error
 NEW IN VERSION 1.4: Added option to input arguments via file (input.txt)
 The inputs are as such: case name, iterations, initial failures, load-generation ratio, load-shed constant, estimation error, and output name
@@ -126,7 +128,9 @@ output name: the names of the output files, including the states matrix (output_
     <fileset.package>
       <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/input.txt</file>
     </fileset.package>
-    <fileset.depfun />
+    <fileset.depfun>
+      <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/temp_1.mat</file>
+    </fileset.depfun>
     <build-deliverables>
       <file location="${PROJECT_ROOT}/cascading_failure_simulator/for_testing" name="splash.png" optional="false">/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_testing/splash.png</file>
       <file location="${PROJECT_ROOT}/cascading_failure_simulator/for_testing" name="readme.txt" optional="true">/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_testing/readme.txt</file>
@@ -160,7 +164,7 @@ output name: the names of the output files, including the states matrix (output_
       <vista>false</vista>
       <linux>false</linux>
       <solaris>false</solaris>
-      <osver>12.1</osver>
+      <osver>12.2.1</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>maci64</arch>
