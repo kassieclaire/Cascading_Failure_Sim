@@ -10,7 +10,7 @@ import os, sys
 def generate_states_df(states_matrix_name='states',initial_failure_table_name='initial_failures', clusters_matrix_name='cluster_branch_118', number_of_lines=186, use_test_cluster=False, output_df_name = "states_dataframe", use_simplified_df = False, states_matrix_folder = 'states_matrices'):
     #change directory to include folder in path
     old_dir = os.getcwd()
-    os.chdir(os.getcwd() + "\\" + states_matrix_folder)
+    os.chdir(os.getcwd() + os.path.sep + states_matrix_folder)
     ##Load in clusters
     if use_test_cluster:
         clusters = [list(range(0, 94)), list(range(94, number_of_lines+1))]

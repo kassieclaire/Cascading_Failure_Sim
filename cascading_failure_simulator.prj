@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="2604728371" file="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator.prj" location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim" name="cascading_failure_simulator" preferred-package-location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_redistribution" preferred-package-type="package.type.app" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="1697351959" file="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator.prj" location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim" name="cascading_failure_simulator" preferred-package-location="/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_redistribution" preferred-package-type="package.type.app" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>cascading_failure_simulator</param.appname>
     <param.icon />
     <param.icons />
@@ -130,6 +130,9 @@ output name: the names of the output files, including the states matrix (output_
     </fileset.package>
     <fileset.depfun>
       <file>${PROJECT_ROOT}/MATPOWER_Sim_Large_Topologies/temp_1.mat</file>
+      <file>${PROJECT_ROOT}/osqp/osqp-0.6.2-matlab-mac64/codegen/make_emosqp.m</file>
+      <file>${PROJECT_ROOT}/osqp/osqp-0.6.2-matlab-mac64/codegen/render_workspace.m</file>
+      <file>${PROJECT_ROOT}/osqp/osqp-0.6.2-matlab-mac64/osqp_mex.mexmaci64</file>
     </fileset.depfun>
     <build-deliverables>
       <file location="${PROJECT_ROOT}/cascading_failure_simulator/for_testing" name="splash.png" optional="false">/Users/kassie/Documents/Code Repositories/Cascading_Failure_Sim/cascading_failure_simulator/for_testing/splash.png</file>

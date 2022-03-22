@@ -152,7 +152,7 @@ if (NumIt > simulation_group_size)
         end
         %start the group of simulations in parallel
         fprintf("Starting simulations from starting index %d to ending index %d\n\r", start_index, end_index);
-        StatesCell = cellmat((end_index-start_index+1), 1, 10000, 14);
+        StatesCell = cellmat((end_index-start_index+1), 1, NumBranches * simulation_group_size, 14); %matrix given max possible size of simulations
         final_index = (end_index-start_index+1);
         parfor s=1:final_index % for every iteration under the same setting
             %s %print out s
