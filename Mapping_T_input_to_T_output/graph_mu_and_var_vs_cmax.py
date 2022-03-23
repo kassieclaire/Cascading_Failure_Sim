@@ -22,7 +22,6 @@ from scipy.stats import pearsonr
 #for graphing mean instead of variance, set the following to true
 #NOTE: Show dramatic event that happens, here's the outcome
 #NOTE: Ukraine cyberattacks powergrid blackout -- 2015
-
 graph_mu = False
 #Use binary Cmax -- split by median -- below median, above median
 binary_C_max = True
