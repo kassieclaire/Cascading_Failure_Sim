@@ -3,9 +3,25 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from statistics import mean, median
 from scipy.stats import pearsonr
-#TODO: binary approximation of Cmax (small, large), systematically say where CMax matters, where it doesn't matter
+#DONE: TODO: binary approximation of Cmax (small, large), systematically say where CMax matters, where it doesn't matter
 #TODO: check pstop curves, find out what's going on -- talk to Rezoan
+#TODO: Lookup table maybe for implementation into state matrix?
+#TODO: generate 2 clusters -- little cmax, large cmax -- look at pmf variance, mean as outputs
+#TODO: aggregate over F -- dropping F from the equation
+#TODO: Make scattergrams
+#TODO: At least 6 plots
+#NOTE: Maybe binarization/reduction (tiny/medium/large) of variance?
+#NOTE: eventually test the reduced model against a non-reduced model to prove its usefulness if we go in that direction
+#NOTE: Jamir's paper -- proofread abstract, introduction, conclusions -- maybe more
+#E.g.: When capacity is big.. this is what happens -- likely to be among these clusters -- hence this is happening, etc.
+#NOTE: make 1 slide on the user interface for the power grid -- high-level stuff -- TOP PRIORITY
+#Output: tool that makes research accessible to operators, analysts
+#Create one slide and send to Dr. Hayat
+#Big/small capacity can shed light on what cluster
 #for graphing mean instead of variance, set the following to true
+#NOTE: Show dramatic event that happens, here's the outcome
+#NOTE: Ukraine cyberattacks powergrid blackout -- 2015
+
 graph_mu = False
 #Use binary Cmax -- split by median -- below median, above median
 binary_C_max = True
