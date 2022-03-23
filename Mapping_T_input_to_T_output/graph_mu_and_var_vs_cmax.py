@@ -15,6 +15,7 @@ from scipy.stats import pearsonr
 #NOTE: Jamir's paper -- proofread abstract, introduction, conclusions -- maybe more
 #E.g.: When capacity is big.. this is what happens -- likely to be among these clusters -- hence this is happening, etc.
 #NOTE: make 1 slide on the user interface for the power grid -- high-level stuff -- TOP PRIORITY
+#NOTE: Include pictures of all team members
 #Output: tool that makes research accessible to operators, analysts
 #Create one slide and send to Dr. Hayat
 #Big/small capacity can shed light on what cluster
