@@ -6,10 +6,10 @@ from scipy.stats import pearsonr
 #DONE: TODO: binary approximation of Cmax (small, large), systematically say where CMax matters, where it doesn't matter
 #TODO: check pstop curves, find out what's going on -- talk to Rezoan
 #TODO: Lookup table maybe for implementation into state matrix?
-#TODO: generate 2 clusters -- little cmax, large cmax -- look at pmf variance, mean as outputs
-#TODO: aggregate over F -- dropping F from the equation
-#TODO: Make scattergrams
-#TODO: At least 6 plots
+#DONE: TODO: generate 2 clusters -- little cmax, large cmax -- look at pmf variance, mean as outputs
+#DONE: TODO: aggregate over F -- dropping F from the equation
+#DONE: TODO: Make scattergrams
+#DONE: TODO: At least 6 plots
 #NOTE: Maybe binarization/reduction (tiny/medium/large) of variance?
 #NOTE: eventually test the reduced model against a non-reduced model to prove its usefulness if we go in that direction
 #NOTE: Jamir's paper -- proofread abstract, introduction, conclusions -- maybe more
@@ -23,7 +23,7 @@ from scipy.stats import pearsonr
 #NOTE: Show dramatic event that happens, here's the outcome
 #NOTE: Ukraine cyberattacks powergrid blackout -- 2015
 
-normalize_across_F = False
+normalize_across_F = True
 #number of points needed for graphing for particular F, mu, var combination
 cutoff = 5
 #counter for number of F, mu, var combinations that meet the cutoff
