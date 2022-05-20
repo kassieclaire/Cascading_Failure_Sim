@@ -9,7 +9,7 @@ plt.style.use('ieee')
 plt.rcParams['figure.dpi'] = 350
 #set the figure size
 plt.rcParams['figure.figsize'] = (4, 3)
-#set plot font size to 10
+#set plot font size to 6
 plt.rcParams.update({'font.size': 6})
 
 #set a minimum number of failures

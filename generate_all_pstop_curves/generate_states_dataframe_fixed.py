@@ -134,8 +134,8 @@ def generate_states_df(states_matrix_name='states',initial_failure_table_name='i
             line_failure_row = [0]*len(clusters)
             
             initial_cluster_failures = []
-            #print(iteration_track)
             for failure in initial_failures[iteration_track]:
+                print("Specific failure:", failure)
                 for i in range(len(clusters)):
                     if failure in clusters[i]: #if line failure is in cluster i
                         line_failure_row[i] = line_failure_row[i]+1
@@ -160,6 +160,7 @@ def generate_states_df(states_matrix_name='states',initial_failure_table_name='i
 
         cluster_failures.append(line_failure_row + []) #append line_failure_row to the cluster_failures list of lists (matrix to be added) -- fix -- add empty list?
         topological_factor_row = [cluster_failure / total_line_failures for cluster_failure in line_failure_row] #create the topological factor row
+        print(topological_factor_row)
         cluster_failures_topological_factors.append(topological_factor_row)
     #print(cluster_failures)
     #print(iteration_track)
